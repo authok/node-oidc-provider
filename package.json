@@ -1,6 +1,6 @@
 {
-  "name": "oidc-provider",
-  "version": "7.10.4",
+  "name": "@authok/oidc-provider",
+  "version": "7.10.5",
   "description": "OAuth 2.0 Authorization Server implementation for Node.js with OpenID Connect",
   "keywords": [
     "appauth",
@@ -37,13 +37,13 @@
     "provider",
     "server"
   ],
-  "homepage": "https://github.com/panva/node-oidc-provider",
-  "repository": "panva/node-oidc-provider",
+  "homepage": "https://github.com/authok/node-oidc-provider",
+  "repository": "authok/node-oidc-provider",
   "funding": {
     "url": "https://github.com/sponsors/panva"
   },
   "license": "MIT",
-  "author": "Filip Skokan <panva.ip@gmail.com>",
+  "author": "Edison <edison@authok.cn>",
   "main": "lib/index.js",
   "files": [
     "lib"
