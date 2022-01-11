@@ -32,8 +32,8 @@ describe('extraClientMetadata configuration', () => {
       ],
     });
 
-    await provider.Client.find('client-1');
-    await provider.Client.find('client-2');
+    await provider.Client.find({}, 'client-1');
+    await provider.Client.find({}, 'client-2');
 
     const calls = validator.getCalls();
 
@@ -47,7 +47,7 @@ describe('extraClientMetadata configuration', () => {
     expect(calls[4].calledWith(undefined, 'bar', 'two')).to.be.true;
     expect(calls[5].calledWith(undefined, 'foo_bar', 'three')).to.be.true;
 
-    const client = await provider.Client.find('client-2');
+    const client = await provider.Client.find({}, 'client-2');
     expect(client).to.have.property('foo_bar');
     expect(client.metadata()).to.have.property('foo_bar');
   });
@@ -72,7 +72,7 @@ describe('extraClientMetadata configuration', () => {
       ],
     });
 
-    const client = await provider.Client.find('client');
+    const client = await provider.Client.find({}, 'client');
     expect(client).to.have.property('foo', 'default');
     expect(client).to.have.property('clientName', 'test RP');
   });
@@ -94,7 +94,7 @@ describe('extraClientMetadata configuration', () => {
       ],
     });
 
-    const client = await provider.Client.find('client');
+    const client = await provider.Client.find({}, 'client');
     expect(client).not.to.have.property('foo');
   });
 
@@ -114,7 +114,7 @@ describe('extraClientMetadata configuration', () => {
       ],
     });
 
-    await provider.Client.find('client');
+    await provider.Client.find({}, 'client');
 
     expect(validator.calledOnce).to.be.true;
     expect(validator.calledWith(undefined, 'client_name', undefined)).to.be.true;
@@ -139,7 +139,7 @@ describe('extraClientMetadata configuration', () => {
         ],
       });
 
-      await provider.Client.find('client');
+      await provider.Client.find({}, 'client');
 
       throw new Error('expected a throw from the above');
     } catch (err) {

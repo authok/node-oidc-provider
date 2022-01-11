@@ -56,7 +56,7 @@ class MongoAdapter {
 
   // NOTE: the payload for Session model may contain client_id as keys, make sure you do not use
   //   dots (".") in your client_id value charset.
-  async upsert(_id, payload, expiresIn) {
+  async upsert(ctx, _id, payload, expiresIn) {
     let expiresAt;
 
     if (expiresIn) {
@@ -70,7 +70,7 @@ class MongoAdapter {
     );
   }
 
-  async find(_id) {
+  async find(ctx, _id) {
     const result = await this.coll().find(
       { _id },
       { payload: 1 },
@@ -80,7 +80,7 @@ class MongoAdapter {
     return result.payload;
   }
 
-  async findByUserCode(userCode) {
+  async findByUserCode(ctx, userCode) {
     const result = await this.coll().find(
       { 'payload.userCode': userCode },
       { payload: 1 },
@@ -90,7 +90,7 @@ class MongoAdapter {
     return result.payload;
   }
 
-  async findByUid(uid) {
+  async findByUid(ctx, uid) {
     const result = await this.coll().find(
       { 'payload.uid': uid },
       { payload: 1 },
@@ -100,15 +100,15 @@ class MongoAdapter {
     return result.payload;
   }
 
-  async destroy(_id) {
+  async destroy(ctx, _id) {
     await this.coll().deleteOne({ _id });
   }
 
-  async revokeByGrantId(grantId) {
+  async revokeByGrantId(ctx, grantId) {
     await this.coll().deleteMany({ 'payload.grantId': grantId });
   }
 
-  async consume(_id) {
+  async consume(ctx, _id) {
     await this.coll().findOneAndUpdate(
       { _id },
       { $set: { 'payload.consumed': Math.floor(Date.now() / 1000) } },

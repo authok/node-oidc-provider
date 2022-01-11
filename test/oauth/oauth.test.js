@@ -41,7 +41,7 @@ describe('requests without the openid scope', () => {
           response_type: 'code',
         });
 
-        const client = await this.provider.Client.find('client');
+        const client = await this.provider.Client.find({}, 'client');
 
         client[clientProperty] = value;
 

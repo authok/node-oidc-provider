@@ -190,10 +190,10 @@ fapi.use(async (ctx, next) => {
   if (ctx.path === '/ciba-sim') {
     const { authReqId, action } = ctx.query;
 
-    const request = await fapi.BackchannelAuthenticationRequest.find(authReqId);
+    const request = await fapi.BackchannelAuthenticationRequest.find(ctx, authReqId);
 
     if (action === 'allow') {
-      const client = await fapi.Client.find(request.clientId);
+      const client = await fapi.Client.find(ctx, request.clientId);
       const grant = new fapi.Grant({
         client,
         accountId: request.accountId,
@@ -207,10 +207,10 @@ fapi.use(async (ctx, next) => {
         claims = claims.concat(Object.keys(request.claims.userinfo));
       }
       grant.addOIDCClaims(claims);
-      await grant.save();
-      await fapi.backchannelResult(request, grant, { acr: 'urn:mace:incommon:iap:silver' }).catch(() => {});
+      await grant.save(ctx);
+      await fapi.backchannelResult(ctx, request, grant, { acr: 'urn:mace:incommon:iap:silver' }).catch(() => {});
     } else {
-      await fapi.backchannelResult(request, new errors.AccessDenied('end-user cancelled request')).catch(() => {});
+      await fapi.backchannelResult(ctx, request, new errors.AccessDenied('end-user cancelled request')).catch(() => {});
     }
 
     ctx.body = { done: true };

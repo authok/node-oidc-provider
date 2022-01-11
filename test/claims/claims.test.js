@@ -65,12 +65,12 @@ expire.setDate(expire.getDate() + 1);
       after(function () { return this.logout(); });
 
       before(async function () {
-        const client = await this.provider.Client.find('client');
+        const client = await this.provider.Client.find({}, 'client');
         client.defaultAcrValues = ['1', '2'];
       });
 
       after(async function () {
-        const client = await this.provider.Client.find('client');
+        const client = await this.provider.Client.find({}, 'client');
         delete client.defaultAcrValues;
       });
 
@@ -237,7 +237,7 @@ expire.setDate(expire.getDate() + 1);
             },
           });
 
-          return sess.save(30); // TODO: bother running the ttl helper?
+          return sess.save({}, 30); // TODO: bother running the ttl helper?
         }
 
         it('session subject value differs from the one requested [1/2]', function () {
@@ -521,7 +521,7 @@ expire.setDate(expire.getDate() + 1);
         });
 
         it('id_token_hint belongs to a user that is not currently logged in [1/3]', async function () {
-          const client = await this.provider.Client.find('client');
+          const client = await this.provider.Client.find({}, 'client');
           const { IdToken } = this.provider;
           const idToken = new IdToken({
             sub: 'not-the-droid-you-are-looking-for',
@@ -548,7 +548,7 @@ expire.setDate(expire.getDate() + 1);
         });
 
         it('id_token_hint belongs to a user that is not currently logged in [2/3]', async function () {
-          const client = await this.provider.Client.find('client-pairwise');
+          const client = await this.provider.Client.find({}, 'client-pairwise');
           const { IdToken } = this.provider;
           const idToken = new IdToken({
             sub: 'not-the-droid-you-are-looking-for',
@@ -577,7 +577,7 @@ expire.setDate(expire.getDate() + 1);
 
         it('id_token_hint belongs to a user that is not currently logged in [3/3]', async function () {
           this.logout();
-          const client = await this.provider.Client.find('client-pairwise');
+          const client = await this.provider.Client.find({}, 'client-pairwise');
           const { IdToken } = this.provider;
           const idToken = new IdToken({
             sub: 'not-the-droid-you-are-looking-for',
@@ -601,7 +601,7 @@ expire.setDate(expire.getDate() + 1);
 
         it('id_token_hint belongs to a user that is currently logged in [1/2]', async function () {
           const session = this.getSession();
-          const client = await this.provider.Client.find('client');
+          const client = await this.provider.Client.find({}, 'client');
           const { IdToken } = this.provider;
           const idToken = new IdToken({ sub: session.accountId }, { client, ctx: undefined });
 
@@ -625,7 +625,7 @@ expire.setDate(expire.getDate() + 1);
 
         it('id_token_hint belongs to a user that is currently logged in [2/2]', async function () {
           const session = this.getSession();
-          const client = await this.provider.Client.find('client-pairwise');
+          const client = await this.provider.Client.find({}, 'client-pairwise');
           const { IdToken } = this.provider;
           const idToken = new IdToken({ sub: session.accountId }, { client, ctx: undefined });
 

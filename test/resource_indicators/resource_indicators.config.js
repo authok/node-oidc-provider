@@ -32,8 +32,8 @@ merge(config, {
           grant.addResourceScope(resource, request.scope);
         }
 
-        await grant.save();
-        return ctx.oidc.provider.backchannelResult(request, grant.jti);
+        await grant.save(ctx);
+        return ctx.oidc.provider.backchannelResult(ctx, request, grant.jti);
       },
     },
     resourceIndicators: {

@@ -30,7 +30,7 @@ class MyAdapter {
    * @param {integer} expiresIn Number of seconds intended for this model to be stored.
    *
    */
-  async upsert(id, payload, expiresIn) {
+  async upsert(ctx, id, payload, expiresIn) {
 
     /**
      *
@@ -162,7 +162,7 @@ class MyAdapter {
    * @param {string} id Identifier of oidc-provider model
    *
    */
-  async find(id) {
+  async find(ctx, id) {
 
   }
 
@@ -177,7 +177,7 @@ class MyAdapter {
    * @param {string} userCode the user_code value associated with a DeviceCode instance
    *
    */
-  async findByUserCode(userCode) {
+  async findByUserCode(ctx, userCode) {
 
   }
 
@@ -191,7 +191,7 @@ class MyAdapter {
    * @param {string} uid the uid value associated with a Session instance
    *
    */
-  async findByUid(uid) {
+  async findByUid(ctx, uid) {
 
   }
 
@@ -206,7 +206,7 @@ class MyAdapter {
    * @param {string} id Identifier of oidc-provider model
    *
    */
-  async consume(id) {
+  async consume(ctx, id) {
 
   }
 
@@ -220,7 +220,7 @@ class MyAdapter {
    * @param {string} id Identifier of oidc-provider model
    *
    */
-  async destroy(id) {
+  async destroy(ctx, id) {
 
   }
 
@@ -234,7 +234,7 @@ class MyAdapter {
    * @param {string} grantId the grantId value associated with a this model's instance
    *
    */
-  async revokeByGrantId(grantId) {
+  async revokeByGrantId(ctx, grantId) {
 
   }
 }

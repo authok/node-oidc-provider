@@ -39,7 +39,7 @@ describe('session bound tokens behaviours', () => {
         .expect(auth.validateClientLocation)
         .expect(assignAuthorizationResponseValues.bind(this));
 
-      const code = await this.provider.AuthorizationCode.find(this.code);
+      const code = await this.provider.AuthorizationCode.find({}, this.code);
       expect(code).to.have.property('expiresWithSession', true);
 
       await this.agent.post('/token')
@@ -52,14 +52,14 @@ describe('session bound tokens behaviours', () => {
         .expect(200)
         .expect(assignTokenResponseValues.bind(this));
 
-      const token = await this.provider.AccessToken.find(this.access_token);
+      const token = await this.provider.AccessToken.find({}, this.access_token);
       expect(token).to.have.property('expiresWithSession', true);
 
       await this.agent.get('/me')
         .auth(this.access_token, { type: 'bearer' })
         .expect(200);
 
-      await this.TestAdapter.for('Session').destroy(this.getSessionId());
+      await this.TestAdapter.for('Session').destroy({}, this.getSessionId());
 
       await this.agent.get('/me')
         .auth(this.access_token, { type: 'bearer' })
@@ -81,7 +81,7 @@ describe('session bound tokens behaviours', () => {
         .expect(auth.validateClientLocation)
         .expect(assignAuthorizationResponseValues.bind(this));
 
-      const code = await this.provider.AuthorizationCode.find(this.code);
+      const code = await this.provider.AuthorizationCode.find({}, this.code);
       expect(code).to.have.property('expiresWithSession', true);
 
       await this.agent.post('/token')
@@ -94,10 +94,10 @@ describe('session bound tokens behaviours', () => {
         .expect(200)
         .expect(assignTokenResponseValues.bind(this));
 
-      let refresh = await this.provider.RefreshToken.find(this.refresh_token);
+      let refresh = await this.provider.RefreshToken.find({}, this.refresh_token);
       expect(refresh).to.have.property('expiresWithSession', true);
 
-      const token = await this.provider.AccessToken.find(this.access_token);
+      const token = await this.provider.AccessToken.find({}, this.access_token);
       expect(token).to.have.property('expiresWithSession', true);
       await this.agent.get('/me')
         .auth(this.access_token, { type: 'bearer' })
@@ -113,15 +113,15 @@ describe('session bound tokens behaviours', () => {
         .expect(200)
         .expect(assignTokenResponseValues.bind(this));
 
-      refresh = await this.provider.RefreshToken.find(this.refresh_token);
+      refresh = await this.provider.RefreshToken.find({}, this.refresh_token);
       expect(refresh).to.have.property('expiresWithSession', true);
 
       {
-        const token = await this.provider.AccessToken.find(this.access_token);
+        const token = await this.provider.AccessToken.find({}, this.access_token);
         expect(token).to.have.property('expiresWithSession', true);
       }
 
-      await this.TestAdapter.for('Session').destroy(this.getSessionId());
+      await this.TestAdapter.for('Session').destroy({}, this.getSessionId());
 
       await this.agent.get('/me')
         .auth(this.access_token, { type: 'bearer' })
@@ -154,7 +154,7 @@ describe('session bound tokens behaviours', () => {
         .expect(auth.validateClientLocation)
         .expect(assignAuthorizationResponseValues.bind(this));
 
-      const code = await this.provider.AuthorizationCode.find(this.code);
+      const code = await this.provider.AuthorizationCode.find({}, this.code);
       expect(code).not.to.have.property('expiresWithSession');
 
       await this.agent.post('/token')
@@ -167,11 +167,11 @@ describe('session bound tokens behaviours', () => {
         .expect(200)
         .expect(assignTokenResponseValues.bind(this));
 
-      let refresh = await this.provider.RefreshToken.find(this.refresh_token);
+      let refresh = await this.provider.RefreshToken.find({}, this.refresh_token);
       expect(refresh).not.to.have.property('expiresWithSession');
 
       {
-        const token = await this.provider.AccessToken.find(this.access_token);
+        const token = await this.provider.AccessToken.find({}, this.access_token);
         expect(token).not.to.have.property('expiresWithSession');
       }
 
@@ -189,12 +189,12 @@ describe('session bound tokens behaviours', () => {
         .expect(200)
         .expect(assignTokenResponseValues.bind(this));
 
-      const token = await this.provider.AccessToken.find(this.access_token);
+      const token = await this.provider.AccessToken.find({}, this.access_token);
       expect(token).not.to.have.property('expiresWithSession');
-      refresh = await this.provider.RefreshToken.find(this.refresh_token);
+      refresh = await this.provider.RefreshToken.find({}, this.refresh_token);
       expect(refresh).not.to.have.property('expiresWithSession');
 
-      await this.TestAdapter.for('Session').destroy(this.getSessionId());
+      await this.TestAdapter.for('Session').destroy({}, this.getSessionId());
 
       await this.agent.get('/me')
         .auth(this.access_token, { type: 'bearer' })
@@ -211,11 +211,11 @@ describe('session bound tokens behaviours', () => {
         .expect(assignTokenResponseValues.bind(this));
 
       {
-        const token = await this.provider.AccessToken.find(this.access_token);
+        const token = await this.provider.AccessToken.find({}, this.access_token);
         expect(token).not.to.have.property('expiresWithSession');
       }
 
-      refresh = await this.provider.RefreshToken.find(this.refresh_token);
+      refresh = await this.provider.RefreshToken.find({}, this.refresh_token);
       expect(refresh).not.to.have.property('expiresWithSession');
     });
   });
@@ -236,14 +236,14 @@ describe('session bound tokens behaviours', () => {
         .expect(auth.validateClientLocation)
         .expect(assignAuthorizationResponseValues.bind(this));
 
-      const token = await this.provider.AccessToken.find(this.access_token);
+      const token = await this.provider.AccessToken.find({}, this.access_token);
       expect(token).to.have.property('expiresWithSession', true);
 
       await this.agent.get('/me')
         .auth(this.access_token, { type: 'bearer' })
         .expect(200);
 
-      await this.TestAdapter.for('Session').destroy(this.getSessionId());
+      await this.TestAdapter.for('Session').destroy({}, this.getSessionId());
 
       await this.agent.get('/me')
         .auth(this.access_token, { type: 'bearer' })

@@ -487,7 +487,7 @@ describe('request parameter features', () => {
       });
 
       it('can accept Request Objects issued within acceptable system clock skew', async function () {
-        const client = await this.provider.Client.find('client-with-HS-sig');
+        const client = await this.provider.Client.find({}, 'client-with-HS-sig');
         let [key] = client.symmetricKeyStore.selectForSign({ alg: 'HS256' });
         key = await importJWK(key);
         i(this.provider).configuration().clockTolerance = 10;
@@ -512,7 +512,7 @@ describe('request parameter features', () => {
       });
 
       it('works with signed by an actual DSA', async function () {
-        const client = await this.provider.Client.find('client-with-HS-sig');
+        const client = await this.provider.Client.find({}, 'client-with-HS-sig');
         let [key] = client.symmetricKeyStore.selectForSign({ alg: 'HS256' });
         key = await importJWK(key);
         return JWT.sign({
@@ -535,7 +535,7 @@ describe('request parameter features', () => {
       });
 
       it('rejects HMAC based requests when signed with an expired secret', async function () {
-        const client = await this.provider.Client.find('client-with-HS-sig-expired');
+        const client = await this.provider.Client.find({}, 'client-with-HS-sig-expired');
         let [key] = client.symmetricKeyStore.selectForSign({ alg: 'HS256' });
         key = await importJWK(key);
 
@@ -569,7 +569,7 @@ describe('request parameter features', () => {
       });
 
       it('supports optional replay prevention', async function () {
-        const client = await this.provider.Client.find('client-with-HS-sig');
+        const client = await this.provider.Client.find({}, 'client-with-HS-sig');
         let [key] = client.symmetricKeyStore.selectForSign({ alg: 'HS256' });
         key = await importJWK(key);
 
@@ -939,7 +939,7 @@ describe('request parameter features', () => {
         const spy = sinon.spy();
         this.provider.once(errorEvt, spy);
 
-        const client = await this.provider.Client.find('client-with-HS-sig');
+        const client = await this.provider.Client.find({}, 'client-with-HS-sig');
         let [key] = client.symmetricKeyStore.selectForSign({ alg: 'HS256' });
         key = await importJWK(key);
         return JWT.sign({
@@ -997,7 +997,7 @@ describe('request parameter features', () => {
       });
 
       it('handles unrecognized parameters', async function () {
-        const client = await this.provider.Client.find('client-with-HS-sig');
+        const client = await this.provider.Client.find({}, 'client-with-HS-sig');
         let [key] = client.symmetricKeyStore.selectForSign({ alg: 'HS256' });
         key = await importJWK(key);
         return JWT.sign({

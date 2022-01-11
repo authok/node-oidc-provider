@@ -59,10 +59,10 @@ describe('logout endpoint', () => {
       describe(`${verb.toUpperCase()} end_session`, () => {
         context('client with postLogoutRedirectUris', () => {
           before(async function () {
-            (await this.provider.Client.find('client')).postLogoutRedirectUris = ['https://client.example.com/logout/cb'];
+            (await this.provider.Client.find({}, 'client')).postLogoutRedirectUris = ['https://client.example.com/logout/cb'];
           });
           after(async function () {
-            (await this.provider.Client.find('client')).postLogoutRedirectUris = [];
+            (await this.provider.Client.find({}, 'client')).postLogoutRedirectUris = [];
           });
 
           it('even when expired', function () {
@@ -172,12 +172,12 @@ describe('logout endpoint', () => {
 
           describe('expired client secrets', () => {
             after(async function () {
-              const client = await this.provider.Client.find('client-hmac');
+              const client = await this.provider.Client.find({}, 'client-hmac');
               client.clientSecretExpiresAt = 0;
             });
 
             it('rejects HMAC hints if the secret is expired', async function () {
-              const client = await this.provider.Client.find('client-hmac');
+              const client = await this.provider.Client.find({}, 'client-hmac');
 
               let idToken;
 

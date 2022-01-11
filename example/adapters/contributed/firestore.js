@@ -26,7 +26,7 @@ class FirestoreAdapter {
     this.name = `${namePrefix}_${name.split(' ').join('_')}`;
   }
 
-  async upsert(id, payload, expiresIn) {
+  async upsert(ctx, id, payload, expiresIn) {
     let expiresAt;
 
     if (expiresIn) {
@@ -44,7 +44,7 @@ class FirestoreAdapter {
       );
   }
 
-  async find(id) {
+  async find(ctx, id) {
     const response = await db.collection(this.name).doc(id).get();
     if (!response.exists) {
       return undefined;
@@ -53,7 +53,7 @@ class FirestoreAdapter {
     return this.updateNestedObject(data.payload, undefinedFirestoreValue, undefined);
   }
 
-  async findByUserCode(userCode) {
+  async findByUserCode(ctx, userCode) {
     const response = await db
       .collection(this.name)
       .where('payload.userCode', '==', userCode)
@@ -66,7 +66,7 @@ class FirestoreAdapter {
     return this.updateNestedObject(data.payload, undefinedFirestoreValue, undefined);
   }
 
-  async findByUid(uid) {
+  async findByUid(ctx, uid) {
     const response = await db.collection(this.name).where('payload.uid', '==', uid).limit(1).get();
     if (response.empty) {
       return undefined;
@@ -75,11 +75,11 @@ class FirestoreAdapter {
     return this.updateNestedObject(data.payload, undefinedFirestoreValue, undefined);
   }
 
-  async destroy(id) {
+  async destroy(ctx, id) {
     await db.collection(this.name).doc(id).delete();
   }
 
-  async revokeByGrantId(grantId) {
+  async revokeByGrantId(ctx, grantId) {
     const response = await db.collection(this.name).where('payload.grantId', '==', grantId).get();
     if (response.empty) {
       return;
@@ -91,7 +91,7 @@ class FirestoreAdapter {
     await batch.commit();
   }
 
-  async consume(id) {
+  async consume(ctx, id) {
     const response = await db.collection(this.name).doc(id).get();
     if (!response.exists) {
       return;

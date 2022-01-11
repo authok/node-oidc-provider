@@ -77,7 +77,7 @@ describe('POST code_verification endpoint w/o verification', () => {
       clientId: 'client',
       userCode: 'FOOCODE',
       deviceInfo,
-    }).save();
+    }).save({});
 
     await this.agent.post(route)
       .send({
@@ -146,7 +146,7 @@ describe('POST code_verification endpoint w/o verification', () => {
     const spy = sinon.spy(i(this.provider).configuration('features.deviceFlow'), 'userCodeInputSource');
     await new this.provider.DeviceCode({
       userCode: 'FOOEXPIRED',
-    }).save();
+    }).save({});
 
     timekeeper.travel(Date.now() + (((10 * 60) + 10) * 1000));
     await this.agent.post(route)
@@ -175,7 +175,7 @@ describe('POST code_verification endpoint w/o verification', () => {
     await new this.provider.DeviceCode({
       userCode: 'FOOCONSUMED',
       accountId: 'account',
-    }).save();
+    }).save({});
 
     await this.agent.post(route)
       .send({
@@ -203,7 +203,7 @@ describe('POST code_verification endpoint w/o verification', () => {
     await new this.provider.DeviceCode({
       userCode: 'FOONOTFOUNDCLIENT',
       clientId: 'client',
-    }).save();
+    }).save({});
 
     sinon.stub(this.provider.Client, 'find').callsFake(async () => { });
     await this.agent.post(route)
@@ -231,7 +231,7 @@ describe('POST code_verification endpoint w/o verification', () => {
     const spy = sinon.spy(i(this.provider).configuration('features.deviceFlow'), 'userCodeInputSource');
     await new this.provider.DeviceCode({
       userCode: 'FOOCSRF1',
-    }).save();
+    }).save({});
 
     delete this.getSession().state;
     await this.agent.post(route)
@@ -260,7 +260,7 @@ describe('POST code_verification endpoint w/o verification', () => {
     const spy = sinon.spy(i(this.provider).configuration('features.deviceFlow'), 'userCodeInputSource');
     await new this.provider.DeviceCode({
       userCode: 'FOOCSRF2',
-    }).save();
+    }).save({});
 
     await this.agent.post(route)
       .send({
@@ -312,7 +312,7 @@ describe('POST code_verification endpoint w/ verification', () => {
           client_id: 'client',
           claims: JSON.stringify({ userinfo: { email: null } }),
         },
-      }).save();
+      }).save({});
 
       await this.agent.post(route)
         .send({
@@ -324,7 +324,7 @@ describe('POST code_verification endpoint w/ verification', () => {
         .expect(200)
         .expect(/The Sign-in request was interrupted/);
 
-      code = await this.provider.DeviceCode.find(code);
+      code = await this.provider.DeviceCode.find({}, code);
 
       expect(code).not.to.have.property('accountId');
       expect(code).to.have.property('error', 'access_denied');
@@ -344,7 +344,7 @@ describe('POST code_verification endpoint w/ verification', () => {
           client_id: 'client',
           claims: JSON.stringify({ userinfo: { email: null } }),
         },
-      }).save();
+      }).save({});
 
       await this.agent.post(route)
         .send({
@@ -355,7 +355,7 @@ describe('POST code_verification endpoint w/ verification', () => {
         .type('form')
         .expect(200);
 
-      code = await this.provider.DeviceCode.find(code);
+      code = await this.provider.DeviceCode.find({}, code);
 
       const session = this.getSession();
 
@@ -378,7 +378,7 @@ describe('POST code_verification endpoint w/ verification', () => {
           scope: 'openid',
           client_id: 'client-backchannel',
         },
-      }).save();
+      }).save({});
 
       await this.agent.post(route)
         .send({
@@ -389,7 +389,7 @@ describe('POST code_verification endpoint w/ verification', () => {
         .type('form')
         .expect(200);
 
-      code = await this.provider.DeviceCode.find(code);
+      code = await this.provider.DeviceCode.find({}, code);
 
       expect(code).to.have.property('sid');
       expect(spy.calledOnce).to.be.true;
@@ -406,7 +406,7 @@ describe('POST code_verification endpoint w/ verification', () => {
           client_id: 'client',
           claims: JSON.stringify({ id_token: { sid: null } }),
         },
-      }).save();
+      }).save({});
 
       await this.agent.post(route)
         .send({
@@ -417,7 +417,7 @@ describe('POST code_verification endpoint w/ verification', () => {
         .type('form')
         .expect(200);
 
-      code = await this.provider.DeviceCode.find(code);
+      code = await this.provider.DeviceCode.find({}, code);
 
       expect(code).to.have.property('sid');
       expect(spy.calledOnce).to.be.true;
@@ -434,7 +434,7 @@ describe('POST code_verification endpoint w/ verification', () => {
           client_id: 'client',
           claims: JSON.stringify({ userinfo: { email: null } }),
         },
-      }).save();
+      }).save({});
 
       await this.agent.post(route)
         .send({
@@ -445,7 +445,7 @@ describe('POST code_verification endpoint w/ verification', () => {
         .type('form')
         .expect(200);
 
-      code = await this.provider.DeviceCode.find(code);
+      code = await this.provider.DeviceCode.find({}, code);
 
       const session = this.getSession();
 

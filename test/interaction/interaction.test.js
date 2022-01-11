@@ -103,7 +103,7 @@ describe('devInteractions', () => {
 
     it('checks that the authentication session is still there', async function () {
       const session = this.getSession({ instantiate: true });
-      await session.destroy();
+      await session.destroy({});
 
       await this.agent.get(this.url)
         .accept('text/html')
@@ -115,7 +115,7 @@ describe('devInteractions', () => {
     it("checks that the authentication session's principal didn't change", async function () {
       const session = this.getSession({ instantiate: true });
       session.accountId = 'foobar';
-      await session.persist();
+      await session.persist({});
 
       await this.agent.get(this.url)
         .accept('text/html')
@@ -288,7 +288,7 @@ describe('devInteractions', () => {
         });
 
       const session = this.getSession({ instantiate: true });
-      await session.destroy();
+      await session.destroy({});
 
       await this.agent.get(new URL(location).pathname)
         .expect(400)
@@ -388,8 +388,8 @@ describe('resume after consent', () => {
     });
 
     return Promise.all([
-      interaction.save(30), // TODO: bother running the ttl helper?
-      session.save(30), // TODO: bother running the ttl helper?
+      interaction.save({}, 30), // TODO: bother running the ttl helper?
+      session.save({}, 30), // TODO: bother running the ttl helper?
     ]);
   }
 
@@ -528,7 +528,7 @@ describe('resume after consent', () => {
         })
         .expect(/<form method="post" action=".+\/session\/end\/confirm">/);
 
-      expect(await this.provider.Interaction.find('resume')).to.be.ok;
+      expect(await this.provider.Interaction.find({}, 'resume')).to.be.ok;
 
       await this.agent.post('/session/end/confirm')
         .send({

@@ -197,8 +197,8 @@ describe('OAuth 2.0 Dynamic Client Registration Management Protocol', () => {
 
     it('cannot update non-dynamic clients', async function () {
       const rat = new (this.provider.RegistrationAccessToken)({ clientId: 'client' });
-      const bearer = await rat.save();
-      const client = await this.provider.Client.find('client');
+      const bearer = await rat.save({});
+      const client = await this.provider.Client.find({}, 'client');
       return this.agent.put('/reg/client')
         .auth(bearer, { type: 'bearer' })
         .send(updateProperties(client.metadata(), {
@@ -279,7 +279,7 @@ describe('OAuth 2.0 Dynamic Client Registration Management Protocol', () => {
         .expect(204);
 
       expect(
-        await this.provider.RegistrationAccessToken.find(client.registration_access_token),
+        await this.provider.RegistrationAccessToken.find({}, client.registration_access_token),
       ).to.be.undefined;
     });
 
@@ -323,7 +323,7 @@ describe('OAuth 2.0 Dynamic Client Registration Management Protocol', () => {
 
     it('cannot delete non-dynamic clients', async function () {
       const rat = new (this.provider.RegistrationAccessToken)({ clientId: 'client' });
-      const bearer = await rat.save();
+      const bearer = await rat.save({});
       return this.agent.del('/reg/client')
         .auth(bearer, { type: 'bearer' })
         .expect(this.failWith(403, 'invalid_request', 'client does not have permission to delete its record'));

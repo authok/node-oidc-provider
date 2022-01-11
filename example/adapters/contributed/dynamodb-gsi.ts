@@ -56,7 +56,7 @@ export class DynamoDBAdapter implements Adapter {
     this.name = name;
   }
 
-  async upsert(id: string, payload: AdapterPayload, expiresIn?: number): Promise<void> {
+  async upsert(ctx: Record<string, any>, id: string, payload: AdapterPayload, expiresIn?: number): Promise<void> {
     // DynamoDB can recognise TTL values only in seconds
     const expiresAt = expiresIn ? Math.floor(Date.now() / 1000) + expiresIn : null;
 
@@ -81,7 +81,7 @@ export class DynamoDBAdapter implements Adapter {
     await dynamoClient.update(params).promise();
   }
 
-  async find(id: string): Promise<AdapterPayload | undefined> {
+  async find(ctx, id: string): Promise<AdapterPayload | undefined> {
     const params: DynamoDB.DocumentClient.GetItemInput = {
       TableName: TABLE_NAME,
       Key: { modelId: this.name + "-" + id },
@@ -100,7 +100,7 @@ export class DynamoDBAdapter implements Adapter {
     return result.payload;
   }
 
-  async findByUserCode(userCode: string): Promise<AdapterPayload | undefined> {
+  async findByUserCode(ctx, userCode: string): Promise<AdapterPayload | undefined> {
     const params: DynamoDB.DocumentClient.QueryInput = {
       TableName: TABLE_NAME,
       IndexName: "userCodeIndex",
@@ -124,7 +124,7 @@ export class DynamoDBAdapter implements Adapter {
     return result.payload;
   }
 
-  async findByUid(uid: string): Promise<AdapterPayload | undefined> {
+  async findByUid(ctx, uid: string): Promise<AdapterPayload | undefined> {
     const params: DynamoDB.DocumentClient.QueryInput = {
       TableName: TABLE_NAME,
       IndexName: "uidIndex",
@@ -148,7 +148,7 @@ export class DynamoDBAdapter implements Adapter {
     return result.payload;
   }
 
-  async consume(id: string): Promise<void> {
+  async consume(ctx, id: string): Promise<void> {
     const params: DynamoDB.DocumentClient.UpdateItemInput = {
       TableName: TABLE_NAME,
       Key: { modelId: this.name + "-" + id },
@@ -166,7 +166,7 @@ export class DynamoDBAdapter implements Adapter {
     await dynamoClient.update(params).promise();
   }
 
-  async destroy(id: string): Promise<void> {
+  async destroy(ctx, id: string): Promise<void> {
     const params: DynamoDB.DocumentClient.DeleteItemInput = {
       TableName: TABLE_NAME,
       Key: { modelId: this.name + "-" + id },
@@ -175,7 +175,7 @@ export class DynamoDBAdapter implements Adapter {
     await dynamoClient.delete(params).promise();
   }
 
-  async revokeByGrantId(grantId: string): Promise<void> {
+  async revokeByGrantId(ctx, grantId: string): Promise<void> {
     let ExclusiveStartKey: DynamoDB.DocumentClient.Key | undefined = undefined;
 
     do {

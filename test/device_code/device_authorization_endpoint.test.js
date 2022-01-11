@@ -135,7 +135,7 @@ describe('device_authorization_endpoint', () => {
         response = body;
       });
 
-    const dc = await this.provider.DeviceCode.find(response.device_code);
+    const dc = await this.provider.DeviceCode.find({}, response.device_code);
     expect(dc).to.be.ok;
     expect(dc).to.have.property('clientId', 'client');
     expect(dc).to.have.property('userCode').that.is.a('string').and.equals(normalize(response.user_code));

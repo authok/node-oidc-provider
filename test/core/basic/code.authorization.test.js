@@ -320,7 +320,7 @@ describe('BASIC code', () => {
       });
 
       it('session is too old for this client', async function () {
-        const client = await this.provider.Client.find('client');
+        const client = await this.provider.Client.find({}, 'client');
         client.defaultMaxAge = 1800;
 
         const session = this.getSession();
@@ -569,12 +569,12 @@ describe('BASIC code', () => {
 
       context('when client has more then one redirect_uri', () => {
         before(async function () {
-          const client = await this.provider.Client.find('client');
+          const client = await this.provider.Client.find({}, 'client');
           client.redirectUris.push('https://someOtherUri.com');
         });
 
         after(async function () {
-          const client = await this.provider.Client.find('client');
+          const client = await this.provider.Client.find({}, 'client');
           client.redirectUris.pop();
         });
 

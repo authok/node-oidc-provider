@@ -26,7 +26,7 @@ describe('grant_type=urn:ietf:params:oauth:grant-type:device_code w/ conformIdTo
       scope: 'openid profile offline_access',
       clientId: 'client',
     });
-    const code = await deviceCode.save();
+    const code = await deviceCode.save({});
 
     return this.agent.post('/token')
       .type('form')
@@ -60,7 +60,7 @@ describe('grant_type=urn:ietf:params:oauth:grant-type:device_code', () => {
       scope: 'openid profile offline_access',
       clientId: 'client',
     });
-    const code = await deviceCode.save();
+    const code = await deviceCode.save({});
 
     return this.agent.post('/token')
       .type('form')
@@ -92,7 +92,7 @@ describe('grant_type=urn:ietf:params:oauth:grant-type:device_code', () => {
       scope: 'openid',
       clientId: 'client',
     });
-    deviceCode.save().then((code) => {
+    deviceCode.save({}).then((code) => {
       this.agent.post(route)
         .type('form')
         .send({
@@ -117,7 +117,7 @@ describe('grant_type=urn:ietf:params:oauth:grant-type:device_code', () => {
       scope: 'openid offline_access',
       clientId: 'client',
     });
-    deviceCode.save().then((code) => {
+    deviceCode.save({}).then((code) => {
       this.agent.post(route)
         .type('form')
         .send({
@@ -177,7 +177,7 @@ describe('grant_type=urn:ietf:params:oauth:grant-type:device_code', () => {
         scope: 'openid',
         clientId: 'client',
       });
-      const code = await deviceCode.save();
+      const code = await deviceCode.save({});
 
       return this.agent.post(route)
         .send({
@@ -209,7 +209,7 @@ describe('grant_type=urn:ietf:params:oauth:grant-type:device_code', () => {
         scope: 'openid',
         clientId: 'client-other',
       });
-      const code = await deviceCode.save();
+      const code = await deviceCode.save({});
 
       return this.agent.post(route)
         .send({
@@ -244,7 +244,7 @@ describe('grant_type=urn:ietf:params:oauth:grant-type:device_code', () => {
           scope: 'openid',
           clientId: 'client',
         });
-        const code = await deviceCode.save();
+        const code = await deviceCode.save({});
 
         return this.agent.post(route)
           .send({
@@ -268,7 +268,7 @@ describe('grant_type=urn:ietf:params:oauth:grant-type:device_code', () => {
         scope: 'openid',
         clientId: 'client',
       });
-      const code = await deviceCode.save();
+      const code = await deviceCode.save({});
 
       return this.agent.post(route)
         .send({
@@ -295,8 +295,8 @@ describe('grant_type=urn:ietf:params:oauth:grant-type:device_code', () => {
         scope: 'openid',
         clientId: 'client',
       });
-      const code = await deviceCode.save();
-      await deviceCode.consume();
+      const code = await deviceCode.save({});
+      await deviceCode.consume({});
 
       return this.agent.post(route)
         .send({
@@ -323,7 +323,7 @@ describe('grant_type=urn:ietf:params:oauth:grant-type:device_code', () => {
       // error: missing
       // accountId: missing
     });
-    const code = await deviceCode.save();
+    const code = await deviceCode.save({});
 
     return this.agent.post(route)
       .send({
@@ -346,7 +346,7 @@ describe('grant_type=urn:ietf:params:oauth:grant-type:device_code', () => {
       error: 'foo',
       errorDescription: 'bar',
     });
-    const code = await deviceCode.save();
+    const code = await deviceCode.save({});
 
     return this.agent.post(route)
       .send({
@@ -372,7 +372,7 @@ describe('grant_type=urn:ietf:params:oauth:grant-type:device_code', () => {
       error: 'access_denied',
       errorDescription: 'user has denied access',
     });
-    const code = await deviceCode.save();
+    const code = await deviceCode.save({});
 
     return this.agent.post(route)
       .send({

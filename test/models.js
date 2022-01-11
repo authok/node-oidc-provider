@@ -51,13 +51,13 @@ class TestAdapter extends MemoryAdapter {
     Object.assign(found, update);
   }
 
-  async upsert(id, payload, expiresIn) {
+  async upsert(ctx, id, payload, expiresIn) {
     if (this.model !== 'RegistrationAccessToken' && this.model !== 'InitialAccessToken' && this.model !== 'Client' && this.model !== 'Grant') {
       expect(payload).to.have.property('exp').that.is.a('number').and.is.finite;
       expect(payload.exp).to.be.closeTo(expiresIn + epochTime(), 1);
     }
 
-    return super.upsert(id, payload, expiresIn);
+    return super.upsert(ctx, id, payload, expiresIn);
   }
 }
 

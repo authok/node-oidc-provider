@@ -66,7 +66,7 @@ describe('request Uri features', () => {
       after(function () { return this.logout(); });
 
       it('works with signed by an actual alg (https)', async function () {
-        const client = await this.provider.Client.find('client-with-HS-sig');
+        const client = await this.provider.Client.find({}, 'client-with-HS-sig');
         let [key] = client.symmetricKeyStore.selectForSign({ alg: 'HS256' });
         key = await importJWK(key);
         const request = await JWT.sign({
@@ -95,7 +95,7 @@ describe('request Uri features', () => {
       });
 
       it('works with signed by an actual alg (http)', async function () {
-        const client = await this.provider.Client.find('client-with-HS-sig');
+        const client = await this.provider.Client.find({}, 'client-with-HS-sig');
         let [key] = client.symmetricKeyStore.selectForSign({ alg: 'HS256' });
         key = await importJWK(key);
         const request = await JWT.sign({
@@ -213,11 +213,11 @@ describe('request Uri features', () => {
 
       context('when client has requestUris set', () => {
         before(async function () {
-          (await this.provider.Client.find('client')).requestUris = ['https://thisoneisallowed.com'];
+          (await this.provider.Client.find({}, 'client')).requestUris = ['https://thisoneisallowed.com'];
         });
 
         after(async function () {
-          (await this.provider.Client.find('client')).requestUris = undefined;
+          (await this.provider.Client.find({}, 'client')).requestUris = undefined;
         });
 
         it('checks the allow list', async function () {
@@ -599,7 +599,7 @@ describe('request Uri features', () => {
         const spy = sinon.spy();
         this.provider.once(error, spy);
 
-        const client = await this.provider.Client.find('client-with-HS-sig');
+        const client = await this.provider.Client.find({}, 'client-with-HS-sig');
         let [key] = client.symmetricKeyStore.selectForSign({ alg: 'HS256' });
         key = await importJWK(key);
         const request = await JWT.sign({

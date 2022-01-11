@@ -40,13 +40,13 @@ describe('jwtIntrospection features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client-signed'),
+        client: await this.provider.Client.find({}, 'client-signed'),
         scope: 'openid',
       });
 
       let json;
       let iat;
-      const token = await at.save();
+      const token = await at.save({});
       await this.agent.post(route)
         .auth('client-signed', 'secret')
         .send({
@@ -116,11 +116,11 @@ describe('jwtIntrospection features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client-HS-expired'),
+        client: await this.provider.Client.find({}, 'client-HS-expired'),
         scope: 'openid',
       });
 
-      const token = await at.save();
+      const token = await at.save({});
 
       return this.agent.post(route)
         .send({
@@ -141,11 +141,11 @@ describe('jwtIntrospection features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client-encrypted'),
+        client: await this.provider.Client.find({}, 'client-encrypted'),
         scope: 'openid',
       });
 
-      const token = await at.save();
+      const token = await at.save({});
       await this.agent.post(route)
         .send({
           client_id: 'client-encrypted',

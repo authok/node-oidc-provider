@@ -10,7 +10,7 @@ describe('Pushed Request Object', () => {
   before(bootstrap(__dirname));
 
   before(async function () {
-    const client = await this.provider.Client.find('client');
+    const client = await this.provider.Client.find({}, 'client');
     this.key = await importJWK(client.symmetricKeyStore.selectForSign({ alg: 'HS256' })[0]);
   });
 
@@ -269,7 +269,7 @@ describe('Pushed Request Object', () => {
             let id = request_uri.split(':');
             id = id[id.length - 1];
 
-            expect(await this.provider.PushedAuthorizationRequest.find(id)).to.be.ok;
+            expect(await this.provider.PushedAuthorizationRequest.find({}, id)).to.be.ok;
 
             const auth = new this.AuthorizationRequest({
               client_id: clientId,
@@ -284,7 +284,7 @@ describe('Pushed Request Object', () => {
               .expect(303)
               .expect(auth.validatePresence(['code']));
 
-            expect(await this.provider.PushedAuthorizationRequest.find(id)).not.to.be.ok;
+            expect(await this.provider.PushedAuthorizationRequest.find({}, id)).not.to.be.ok;
           });
 
           it('handles expired or invalid pushed authorization request object', async function () {
@@ -467,7 +467,7 @@ describe('Pushed Request Object', () => {
             let id = request_uri.split(':');
             id = id[id.length - 1];
 
-            expect(await this.provider.PushedAuthorizationRequest.find(id)).to.be.ok;
+            expect(await this.provider.PushedAuthorizationRequest.find({}, id)).to.be.ok;
 
             const auth = new this.AuthorizationRequest({
               client_id: clientId,
@@ -482,7 +482,7 @@ describe('Pushed Request Object', () => {
               .expect(303)
               .expect(auth.validatePresence(['code']));
 
-            expect(await this.provider.PushedAuthorizationRequest.find(id)).not.to.be.ok;
+            expect(await this.provider.PushedAuthorizationRequest.find({}, id)).not.to.be.ok;
           });
 
           it('allows the request_uri to be used without passing client_id to the request', async function () {

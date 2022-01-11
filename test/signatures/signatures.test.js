@@ -31,7 +31,7 @@ describe('signatures', () => {
         .send({
           redirect_uri: 'https://client.example.com/cb',
           grant_type: 'authorization_code',
-          code: await ac.save(),
+          code: await ac.save({}),
         })
         .expect(200)
         .expect((response) => {
@@ -107,7 +107,7 @@ describe('signatures', () => {
         .send({
           redirect_uri: 'https://client.example.com/cb',
           grant_type: 'authorization_code',
-          code: await ac.save(),
+          code: await ac.save({}),
         })
         .expect(200)
         .expect((response) => {
@@ -141,7 +141,7 @@ describe('signatures', () => {
 
   describe('token hashes in id_token', () => {
     before(async function () {
-      this.client = await this.provider.Client.find('client');
+      this.client = await this.provider.Client.find({}, 'client');
     });
 
     before(function () { return this.login(); });

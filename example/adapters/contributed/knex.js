@@ -47,7 +47,7 @@ function knexAdapter(client) {
       this.type = types[name];
     }
 
-    async upsert(id, payload, expiresIn) {
+    async upsert(ctx, id, payload, expiresIn) {
       const expiresAt = getExpireAt(expiresIn);
       await getClient()
         .table(tableName)
@@ -88,27 +88,27 @@ function knexAdapter(client) {
       return this._rows(obj).then(this._result);
     }
 
-    find(id) {
+    find(ctx, id) {
       return this._findBy({ id });
     }
 
-    findByUserCode(userCode) {
+    findByUserCode(ctx, userCode) {
       return this._findBy({ userCode });
     }
 
-    findByUid(uid) {
+    findByUid(ctx, uid) {
       return this._findBy({ uid });
     }
 
-    destroy(id) {
+    destroy(ctx, id) {
       return this._rows({ id }).delete();
     }
 
-    revokeByGrantId(grantId) {
+    revokeByGrantId(ctx, grantId) {
       return this._rows({ grantId }).delete();
     }
 
-    consume(id) {
+    consume(ctx, id) {
       return this._rows({ id }).update({ consumedAt: new Date() });
     }
   };

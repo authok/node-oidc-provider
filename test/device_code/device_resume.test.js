@@ -43,7 +43,7 @@ describe('device interaction resume /device/:uid/', () => {
       params,
       clientId: 'client',
       userCode,
-    }).save();
+    }).save({});
 
     const interaction = new this.provider.Interaction(uid, { uid, session, deviceCode });
     const keys = new KeyGrip(i(this.provider).configuration('cookies.keys'));
@@ -73,8 +73,8 @@ describe('device interaction resume /device/:uid/', () => {
     });
 
     return Promise.all([
-      interaction.save(30), // TODO: bother running the ttl helper?
-      session.save(30), // TODO: bother running the ttl helper?
+      interaction.save({}, 30), // TODO: bother running the ttl helper?
+      session.save({}, 30), // TODO: bother running the ttl helper?
     ]);
   }
 
@@ -270,7 +270,7 @@ describe('device interaction resume /device/:uid/', () => {
             expect(this.getSession()).to.be.ok.and.not.have.property('transient');
           });
 
-        const code = await this.provider.DeviceCode.findByUserCode(userCode);
+        const code = await this.provider.DeviceCode.findByUserCode({}, userCode);
         expect(code).to.have.property('accountId');
       });
 
@@ -299,7 +299,7 @@ describe('device interaction resume /device/:uid/', () => {
             expect(this.getSession()).to.be.ok.and.not.have.property('transient');
           });
 
-        const code = await this.provider.DeviceCode.findByUserCode(userCode);
+        const code = await this.provider.DeviceCode.findByUserCode({}, userCode);
         expect(code).to.have.property('accountId');
       });
 
@@ -327,7 +327,7 @@ describe('device interaction resume /device/:uid/', () => {
             expect(this.getSession()).to.be.ok.and.have.property('transient');
           });
 
-        const code = await this.provider.DeviceCode.findByUserCode(userCode);
+        const code = await this.provider.DeviceCode.findByUserCode({}, userCode);
         expect(code).to.have.property('accountId');
       });
 
@@ -360,7 +360,7 @@ describe('device interaction resume /device/:uid/', () => {
           })
           .expect(/<form method="post" action=".+\/session\/end\/confirm">/);
 
-        expect(await this.provider.Interaction.find(uid)).to.be.ok;
+        expect(await this.provider.Interaction.find({}, uid)).to.be.ok;
 
         await this.agent.post('/session/end/confirm')
           .send({

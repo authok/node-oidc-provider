@@ -25,12 +25,12 @@ describe('introspection features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
         aud: 'urn:example:foo',
       });
 
-      const token = await at.save();
+      const token = await at.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({
@@ -51,11 +51,11 @@ describe('introspection features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
-      const token = await at.save();
+      const token = await at.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({
@@ -74,11 +74,11 @@ describe('introspection features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
-      const token = await at.save();
+      const token = await at.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({
@@ -97,11 +97,11 @@ describe('introspection features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
-      const token = await at.save();
+      const token = await at.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({
@@ -120,11 +120,11 @@ describe('introspection features', () => {
       const rt = new this.provider.RefreshToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token })
@@ -139,11 +139,11 @@ describe('introspection features', () => {
       const rt = new this.provider.RefreshToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'refresh_token' })
@@ -158,11 +158,11 @@ describe('introspection features', () => {
       const rt = new this.provider.RefreshToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'client_credentials' })
@@ -177,11 +177,11 @@ describe('introspection features', () => {
       const rt = new this.provider.RefreshToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'foobar' })
@@ -194,10 +194,10 @@ describe('introspection features', () => {
 
     it('returns the properties for client credentials token [no hint]', async function () {
       const rt = new this.provider.ClientCredentials({
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
       });
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token })
@@ -210,10 +210,10 @@ describe('introspection features', () => {
 
     it('returns the properties for client credentials token [correct hint]', async function () {
       const rt = new this.provider.ClientCredentials({
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
       });
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'client_credentials' })
@@ -226,10 +226,10 @@ describe('introspection features', () => {
 
     it('returns the properties for client credentials token [wrong hint]', async function () {
       const rt = new this.provider.ClientCredentials({
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
       });
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'access_token' })
@@ -242,10 +242,10 @@ describe('introspection features', () => {
 
     it('returns the properties for client credentials token [unrecognized hint]', async function () {
       const rt = new this.provider.ClientCredentials({
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
       });
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'foobar' })
@@ -264,7 +264,7 @@ describe('introspection features', () => {
         scope: 'scope',
       });
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client-pairwise', 'secret')
         .send({ token })
@@ -284,7 +284,7 @@ describe('introspection features', () => {
         scope: 'scope',
       });
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client-introspection', 'secret')
         .send({ token })
@@ -335,11 +335,11 @@ describe('introspection features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
-      const token = await at.save();
+      const token = await at.save({});
       return this.agent.post(route)
         .send({
           token,
@@ -372,7 +372,7 @@ describe('introspection features', () => {
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({
-          token: await ac.save(),
+          token: await ac.save({}),
         })
         .type('form')
         .expect(200)
@@ -386,7 +386,7 @@ describe('introspection features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
         expiresIn: -1,
       });
@@ -394,7 +394,7 @@ describe('introspection features', () => {
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({
-          token: await at.save(),
+          token: await at.save({}),
         })
         .type('form')
         .expect(200)
@@ -408,12 +408,12 @@ describe('introspection features', () => {
       const rt = new this.provider.RefreshToken({
         accountId: 'accountId',
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
-      const token = await rt.save();
-      await rt.consume();
+      const token = await rt.save({});
+      await rt.consume({});
 
       return this.agent.post(route)
         .auth('client', 'secret')
@@ -461,11 +461,11 @@ describe('introspection features', () => {
         (async () => {
           const at = new this.provider.AccessToken({
             accountId: 'accountId',
-            client: await this.provider.Client.find('client'),
+            client: await this.provider.Client.find({}, 'client'),
             scope: 'scope',
           });
 
-          const token = await at.save();
+          const token = await at.save({});
           await this.agent.post(route)
             .auth('client', 'secret')
             .send({
@@ -483,11 +483,11 @@ describe('introspection features', () => {
         (async () => {
           const rt = new this.provider.RefreshToken({
             accountId: 'accountId',
-            client: await this.provider.Client.find('client'),
+            client: await this.provider.Client.find({}, 'client'),
             scope: 'scope',
           });
 
-          const token = await rt.save();
+          const token = await rt.save({});
           await this.agent.post(route)
             .auth('client', 'secret')
             .send({ token })
@@ -502,10 +502,10 @@ describe('introspection features', () => {
 
         (async () => {
           const rt = new this.provider.ClientCredentials({
-            client: await this.provider.Client.find('client'),
+            client: await this.provider.Client.find({}, 'client'),
           });
 
-          const token = await rt.save();
+          const token = await rt.save({});
           await this.agent.post(route)
             .auth('client', 'secret')
             .send({ token })

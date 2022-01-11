@@ -33,7 +33,7 @@ describe('custom token endpoint grant types', () => {
 
   describe('when added', () => {
     before(async function () {
-      const client = await this.provider.Client.find('client');
+      const client = await this.provider.Client.find({}, 'client');
       client.grantTypes.push('lotto');
     });
 

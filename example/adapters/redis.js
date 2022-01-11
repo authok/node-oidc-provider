@@ -36,7 +36,7 @@ class RedisAdapter {
     this.name = name;
   }
 
-  async upsert(id, payload, expiresIn) {
+  async upsert(ctx, id, payload, expiresIn) {
     const key = this.key(id);
     const store = consumable.has(this.name)
       ? { payload: JSON.stringify(payload) } : JSON.stringify(payload);
@@ -74,7 +74,7 @@ class RedisAdapter {
     await multi.exec();
   }
 
-  async find(id) {
+  async find(ctx, id) {
     const data = consumable.has(this.name)
       ? await client.hgetall(this.key(id))
       : await client.get(this.key(id));
@@ -93,22 +93,22 @@ class RedisAdapter {
     };
   }
 
-  async findByUid(uid) {
+  async findByUid(ctx, uid) {
     const id = await client.get(uidKeyFor(uid));
-    return this.find(id);
+    return this.find(ctx, id);
   }
 
-  async findByUserCode(userCode) {
+  async findByUserCode(ctx, userCode) {
     const id = await client.get(userCodeKeyFor(userCode));
-    return this.find(id);
+    return this.find(ctx, id);
   }
 
-  async destroy(id) {
+  async destroy(ctx, id) {
     const key = this.key(id);
     await client.del(key);
   }
 
-  async revokeByGrantId(grantId) { // eslint-disable-line class-methods-use-this
+  async revokeByGrantId(ctx, grantId) { // eslint-disable-line class-methods-use-this
     const multi = client.multi();
     const tokens = await client.lrange(grantKeyFor(grantId), 0, -1);
     tokens.forEach((token) => multi.del(token));
@@ -116,7 +116,7 @@ class RedisAdapter {
     await multi.exec();
   }
 
-  async consume(id) {
+  async consume(ctx, id) {
     await client.hset(this.key(id), 'consumed', Math.floor(Date.now() / 1000));
   }
 

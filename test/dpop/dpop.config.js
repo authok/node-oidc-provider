@@ -22,8 +22,8 @@ merge(config.features, {
         clientId: request.clientId, accountId: request.accountId,
       });
       grant.addOIDCScope(ctx.oidc.requestParamScopes);
-      await grant.save();
-      return ctx.oidc.provider.backchannelResult(request, grant.jti);
+      await grant.save({});
+      return ctx.oidc.provider.backchannelResult(ctx, request, grant.jti);
     },
   },
 });

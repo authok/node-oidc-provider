@@ -58,7 +58,7 @@ class SequelizeAdapter {
     this.name = name;
   }
 
-  async upsert(id, data, expiresIn) {
+  async upsert(ctx, id, data, expiresIn) {
     await this.model.upsert({
       id,
       data,
@@ -69,7 +69,7 @@ class SequelizeAdapter {
     });
   }
 
-  async find(id) {
+  async find(ctx, id) {
     const found = await this.model.findByPk(id);
     if (!found) return undefined;
     return {
@@ -78,7 +78,7 @@ class SequelizeAdapter {
     };
   }
 
-  async findByUserCode(userCode) {
+  async findByUserCode(ctx, userCode) {
     const found = await this.model.findOne({ where: { userCode } });
     if (!found) return undefined;
     return {
@@ -87,7 +87,7 @@ class SequelizeAdapter {
     };
   }
 
-  async findByUid(uid) {
+  async findByUid(ctx, uid) {
     const found = await this.model.findOne({ where: { uid } });
     if (!found) return undefined;
     return {
@@ -96,15 +96,15 @@ class SequelizeAdapter {
     };
   }
 
-  async destroy(id) {
+  async destroy(ctx, id) {
     await this.model.destroy({ where: { id } });
   }
 
-  async consume(id) {
+  async consume(ctx, id) {
     await this.model.update({ consumedAt: new Date() }, { where: { id } });
   }
 
-  async revokeByGrantId(grantId) {
+  async revokeByGrantId(ctx, grantId) {
     await this.model.destroy({ where: { grantId } });
   }
 

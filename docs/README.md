@@ -2686,7 +2686,7 @@ async function loadExistingGrant(ctx) {
     && ctx.oidc.result.consent
     && ctx.oidc.result.consent.grantId) || ctx.oidc.session.grantIdFor(ctx.oidc.client.clientId);
   if (grantId) {
-    return ctx.oidc.provider.Grant.find(grantId);
+    return ctx.oidc.provider.Grant.find(ctx, grantId);
   }
   return undefined;
 }

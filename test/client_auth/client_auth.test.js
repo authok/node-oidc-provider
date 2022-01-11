@@ -525,7 +525,7 @@ describe('client authentication options', () => {
 
   describe('client_secret_jwt auth', () => {
     before(async function () {
-      this.key = await importJWK((await this.provider.Client.find('client-jwt-secret')).symmetricKeyStore.selectForSign({ alg: 'HS256' })[0]);
+      this.key = await importJWK((await this.provider.Client.find({}, 'client-jwt-secret')).symmetricKeyStore.selectForSign({ alg: 'HS256' })[0]);
     });
 
     it('accepts the auth', function () {
@@ -1048,7 +1048,7 @@ describe('client authentication options', () => {
     });
 
     it('rejects assertions when the secret is expired', async function () {
-      const key = await importJWK((await this.provider.Client.find('secret-expired-jwt')).symmetricKeyStore.selectForSign({ alg: 'HS256' })[0]);
+      const key = await importJWK((await this.provider.Client.find({}, 'secret-expired-jwt')).symmetricKeyStore.selectForSign({ alg: 'HS256' })[0]);
       return JWT.sign({
         jti: nanoid(),
         aud: this.provider.issuer + this.suitePath('/token'),
@@ -1110,10 +1110,10 @@ describe('client authentication options', () => {
 
     describe('when token_endpoint_auth_signing_alg is set on the client', () => {
       before(async function () {
-        (await this.provider.Client.find('client-jwt-secret')).tokenEndpointAuthSigningAlg = 'HS384';
+        (await this.provider.Client.find({}, 'client-jwt-secret')).tokenEndpointAuthSigningAlg = 'HS384';
       });
       after(async function () {
-        delete (await this.provider.Client.find('client-jwt-secret')).tokenEndpointAuthSigningAlg;
+        delete (await this.provider.Client.find({}, 'client-jwt-secret')).tokenEndpointAuthSigningAlg;
       });
       it('rejects signatures with different algorithm', function () {
         const spy = sinon.spy();

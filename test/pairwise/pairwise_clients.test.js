@@ -92,7 +92,7 @@ describe('pairwise features', () => {
           .get('/sector')
           .reply(200, JSON.stringify(['https://client.example.com/cb', 'https://another.example.com/forum/cb']));
 
-        return this.provider.Client.find('client-static-with-sector').then((client) => {
+        return this.provider.Client.find({}, 'client-static-with-sector').then((client) => {
           expect(client).to.be.ok;
           expect(client.sectorIdentifier).to.eq('foobar.example.com');
         });

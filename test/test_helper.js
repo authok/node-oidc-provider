@@ -161,7 +161,7 @@ module.exports = function testHelper(dir, {
           grant.addResourceScope(key, value);
         }
         // eslint-disable-next-line no-await-in-loop
-        const grantId = await grant.save();
+        const grantId = await grant.save(ctx);
         session.authorizations[cl.client_id] = {
           sid: nanoid(),
           grantId,
@@ -174,7 +174,7 @@ module.exports = function testHelper(dir, {
         ttl = ttl(ctx, session);
       }
 
-      return Account.findAccount({}, accountId).then(session.save(ttl)).then(() => {
+      return Account.findAccount({}, accountId).then(session.save(ctx, ttl)).then(() => {
         agent._saveCookies.bind(agent)({ headers: { 'set-cookie': cookies } });
       });
     }

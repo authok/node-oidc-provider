@@ -46,7 +46,7 @@ describe('client keystore refresh', () => {
     await keystore.generate('EC', 'P-256');
     setResponse();
 
-    const client = await this.provider.Client.find('client');
+    const client = await this.provider.Client.find({}, 'client');
     await Promise.all([
       client.asymmetricKeyStore.refresh(),
       client.asymmetricKeyStore.refresh(),
@@ -58,7 +58,7 @@ describe('client keystore refresh', () => {
   it('fails when private keys are encountered (and does only one request concurrently)', async function () {
     setResponse(keystore.toJWKS(true));
 
-    const client = await this.provider.Client.find('client');
+    const client = await this.provider.Client.find({}, 'client');
     sinon.stub(client.asymmetricKeyStore, 'fresh').returns(false);
     return Promise.all([
       assert.rejects(client.asymmetricKeyStore.refresh(), (err) => {
@@ -77,7 +77,7 @@ describe('client keystore refresh', () => {
   });
 
   it('adds new keys', async function () {
-    const client = await this.provider.Client.find('client');
+    const client = await this.provider.Client.find({}, 'client');
     await keystore.generate('EC', 'P-256');
     setResponse();
 
@@ -89,7 +89,7 @@ describe('client keystore refresh', () => {
   it('removes not found keys', async function () {
     setResponse({ keys: [] });
 
-    const client = await this.provider.Client.find('client');
+    const client = await this.provider.Client.find({}, 'client');
     sinon.stub(client.asymmetricKeyStore, 'fresh').returns(false);
     await client.asymmetricKeyStore.refresh();
 
@@ -99,7 +99,7 @@ describe('client keystore refresh', () => {
   it('only accepts 200s', async function () {
     setResponse({ keys: [] }, 201);
 
-    const client = await this.provider.Client.find('client');
+    const client = await this.provider.Client.find({}, 'client');
     sinon.stub(client.asymmetricKeyStore, 'fresh').returns(false);
     return assert.rejects(client.asymmetricKeyStore.refresh(), (err) => {
       expect(err).to.be.an('error');
@@ -112,7 +112,7 @@ describe('client keystore refresh', () => {
   it('only accepts parseable json', async function () {
     setResponse('not json');
 
-    const client = await this.provider.Client.find('client');
+    const client = await this.provider.Client.find({}, 'client');
     sinon.stub(client.asymmetricKeyStore, 'fresh').returns(false);
     return assert.rejects(client.asymmetricKeyStore.refresh(), (err) => {
       expect(err).to.be.an('error');
@@ -125,7 +125,7 @@ describe('client keystore refresh', () => {
   it('only accepts keys as array', async function () {
     setResponse({ keys: {} });
 
-    const client = await this.provider.Client.find('client');
+    const client = await this.provider.Client.find({}, 'client');
     sinon.stub(client.asymmetricKeyStore, 'fresh').returns(false);
     return assert.rejects(client.asymmetricKeyStore.refresh(), (err) => {
       expect(err).to.be.an('error');
@@ -137,7 +137,7 @@ describe('client keystore refresh', () => {
 
   describe('caching', () => {
     it('uses expires caching header to determine stale states', async function () {
-      const client = await this.provider.Client.find('client');
+      const client = await this.provider.Client.find({}, 'client');
       await keystore.generate('EC', 'P-256');
       const until = moment().add(2, 'hours').toDate();
 
@@ -158,7 +158,7 @@ describe('client keystore refresh', () => {
     });
 
     it('ignores the cache-control one when expires is provided', async function () {
-      const client = await this.provider.Client.find('client');
+      const client = await this.provider.Client.find({}, 'client');
       await keystore.generate('EC', 'P-256');
       const until = moment().add(2, 'hours').toDate();
 
@@ -182,7 +182,7 @@ describe('client keystore refresh', () => {
     it('uses the max-age if Cache-Control is missing', async function () {
       this.retries(1);
 
-      const client = await this.provider.Client.find('client');
+      const client = await this.provider.Client.find({}, 'client');
       await keystore.generate('EC', 'P-256');
 
       setResponse(undefined, undefined, {
@@ -204,7 +204,7 @@ describe('client keystore refresh', () => {
     it('falls back to 1 minute throttle if no caching header is found', async function () {
       this.retries(1);
 
-      const client = await this.provider.Client.find('client');
+      const client = await this.provider.Client.find({}, 'client');
       await keystore.generate('EC', 'P-256');
 
       setResponse();
@@ -226,7 +226,7 @@ describe('client keystore refresh', () => {
     it('when a stale keystore is passed to JWT verification it gets refreshed when verification fails', async function () {
       setResponse();
 
-      const client = await this.provider.Client.find('client');
+      const client = await this.provider.Client.find({}, 'client');
       client.asymmetricKeyStore.freshUntil = epochTime() - 1;
       return assert.rejects(JWT.verify(
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiYWRtaW4iOnRydWV9.TJVA95OrM7E2cBab30RMHrHDcEfxjoYZgeFONFh7HgA',
@@ -237,7 +237,7 @@ describe('client keystore refresh', () => {
     it('refreshes stale keystores before id_token encryption', async function () {
       setResponse();
 
-      const client = await this.provider.Client.find('client');
+      const client = await this.provider.Client.find({}, 'client');
       client.asymmetricKeyStore.freshUntil = epochTime() - 1;
       expect(client.asymmetricKeyStore.stale()).to.be.true;
 

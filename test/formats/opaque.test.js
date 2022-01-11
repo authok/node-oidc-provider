@@ -55,9 +55,9 @@ describe('opaque storage', () => {
   it('for AccessToken', async function () {
     const kind = 'AccessToken';
     const upsert = spy(this.TestAdapter.for('AccessToken'), 'upsert');
-    const client = await this.provider.Client.find(clientId);
+    const client = await this.provider.Client.find({}, clientId);
     const token = new this.provider.AccessToken({ client, ...fullPayload });
-    await token.save();
+    await token.save({});
 
     expect(upsert.getCall(0).args[0]).to.have.lengthOf(43);
     assert.calledWith(upsert, string, {
@@ -84,9 +84,9 @@ describe('opaque storage', () => {
   it('for AuthorizationCode', async function () {
     const kind = 'AuthorizationCode';
     const upsert = spy(this.TestAdapter.for('AuthorizationCode'), 'upsert');
-    const client = await this.provider.Client.find(clientId);
+    const client = await this.provider.Client.find({}, clientId);
     const token = new this.provider.AuthorizationCode({ client, ...fullPayload });
-    await token.save();
+    await token.save({});
 
     expect(upsert.getCall(0).args[0]).to.have.lengthOf(43);
     assert.calledWith(upsert, string, {
@@ -117,9 +117,9 @@ describe('opaque storage', () => {
   it('for DeviceCode', async function () {
     const kind = 'DeviceCode';
     const upsert = spy(this.TestAdapter.for('DeviceCode'), 'upsert');
-    const client = await this.provider.Client.find(clientId);
+    const client = await this.provider.Client.find({}, clientId);
     const token = new this.provider.DeviceCode({ client, ...fullPayload });
-    await token.save();
+    await token.save({});
 
     expect(upsert.getCall(0).args[0]).to.have.lengthOf(43);
     assert.calledWith(upsert, string, {
@@ -153,9 +153,9 @@ describe('opaque storage', () => {
   it('for BackchannelAuthenticationRequest', async function () {
     const kind = 'BackchannelAuthenticationRequest';
     const upsert = spy(this.TestAdapter.for('BackchannelAuthenticationRequest'), 'upsert');
-    const client = await this.provider.Client.find(clientId);
+    const client = await this.provider.Client.find({}, clientId);
     const token = new this.provider.BackchannelAuthenticationRequest({ client, ...fullPayload });
-    await token.save();
+    await token.save({});
 
     expect(upsert.getCall(0).args[0]).to.have.lengthOf(43);
     assert.calledWith(upsert, string, {
@@ -186,9 +186,9 @@ describe('opaque storage', () => {
   it('for RefreshToken', async function () {
     const kind = 'RefreshToken';
     const upsert = spy(this.TestAdapter.for('RefreshToken'), 'upsert');
-    const client = await this.provider.Client.find(clientId);
+    const client = await this.provider.Client.find({}, clientId);
     const token = new this.provider.RefreshToken({ client, ...fullPayload });
-    await token.save();
+    await token.save({});
 
     expect(upsert.getCall(0).args[0]).to.have.lengthOf(43);
     assert.calledWith(upsert, string, {
@@ -221,9 +221,9 @@ describe('opaque storage', () => {
   it('for ClientCredentials', async function () {
     const kind = 'ClientCredentials';
     const upsert = spy(this.TestAdapter.for('ClientCredentials'), 'upsert');
-    const client = await this.provider.Client.find(clientId);
+    const client = await this.provider.Client.find({}, clientId);
     const token = new this.provider.ClientCredentials({ client, ...fullPayload });
-    await token.save();
+    await token.save({});
 
     expect(upsert.getCall(0).args[0]).to.have.lengthOf(43);
     assert.calledWith(upsert, string, {
@@ -247,7 +247,7 @@ describe('opaque storage', () => {
       expiresIn: 100,
       ...fullPayload,
     });
-    await token.save();
+    await token.save({});
 
     expect(upsert.getCall(0).args[0]).to.have.lengthOf(43);
     assert.calledWith(upsert, string, {
@@ -262,13 +262,13 @@ describe('opaque storage', () => {
   it('for RegistrationAccessToken', async function () {
     const kind = 'RegistrationAccessToken';
     const upsert = spy(this.TestAdapter.for('RegistrationAccessToken'), 'upsert');
-    const client = await this.provider.Client.find(clientId);
+    const client = await this.provider.Client.find({}, clientId);
     const token = new this.provider.RegistrationAccessToken({
       client,
       expiresIn: 100,
       ...fullPayload,
     });
-    await token.save();
+    await token.save({});
 
     expect(upsert.getCall(0).args[0]).to.have.lengthOf(43);
     assert.calledWith(upsert, string, {

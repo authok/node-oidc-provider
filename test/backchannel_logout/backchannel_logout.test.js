@@ -16,7 +16,7 @@ describe('Back-Channel Logout 1.0', () => {
 
   describe('Client#backchannelLogout', () => {
     it('triggers the call', async function () {
-      const client = await this.provider.Client.find('client');
+      const client = await this.provider.Client.find({}, 'client');
 
       nock('https://client.example.com/')
         .filteringRequestBody((body) => {
@@ -35,7 +35,7 @@ describe('Back-Channel Logout 1.0', () => {
     });
 
     it('omits sid when its not required', async function () {
-      const client = await this.provider.Client.find('no-sid');
+      const client = await this.provider.Client.find({}, 'no-sid');
 
       nock('https://no-sid.example.com/')
         .filteringRequestBody((body) => {
@@ -54,7 +54,7 @@ describe('Back-Channel Logout 1.0', () => {
     });
 
     it('handles non-200 OK responses', async function () {
-      const client = await this.provider.Client.find('no-sid');
+      const client = await this.provider.Client.find({}, 'no-sid');
 
       nock('https://no-sid.example.com/')
         .post('/backchannel_logout')
@@ -156,8 +156,8 @@ describe('Back-Channel Logout 1.0', () => {
       const session = this.getSession();
       session.state = { secret: '123', clientId: 'client', postLogoutRedirectUri: '/' };
       const params = { logout: 'yes', xsrf: '123' };
-      const client = await this.provider.Client.find('client');
-      const client2 = await this.provider.Client.find('second-client');
+      const client = await this.provider.Client.find({}, 'client');
+      const client2 = await this.provider.Client.find({}, 'second-client');
 
       sinon.spy(client, 'backchannelLogout');
       sinon.spy(client2, 'backchannelLogout');
@@ -199,8 +199,8 @@ describe('Back-Channel Logout 1.0', () => {
       const session = this.getSession();
       session.state = { secret: '123', clientId: 'client', postLogoutRedirectUri: '/' };
       const params = { xsrf: '123' };
-      const client = await this.provider.Client.find('client');
-      const client2 = await this.provider.Client.find('second-client');
+      const client = await this.provider.Client.find({}, 'client');
+      const client2 = await this.provider.Client.find({}, 'second-client');
 
       sinon.spy(client, 'backchannelLogout');
       sinon.spy(client2, 'backchannelLogout');
@@ -224,8 +224,8 @@ describe('Back-Channel Logout 1.0', () => {
     it('ignores the backchannelLogout when client does not support', async function () {
       this.getSession().state = { secret: '123', clientId: 'client', postLogoutRedirectUri: '/' };
       const params = { logout: 'yes', xsrf: '123' };
-      const client = await this.provider.Client.find('client');
-      const client2 = await this.provider.Client.find('second-client');
+      const client = await this.provider.Client.find({}, 'client');
+      const client2 = await this.provider.Client.find({}, 'second-client');
       delete client.backchannelLogoutUri;
 
       sinon.spy(client, 'backchannelLogout');

@@ -45,7 +45,7 @@ module.exports = (provider) => {
     const {
       uid, prompt, params, session,
     } = await provider.interactionDetails(ctx.req, ctx.res);
-    const client = await provider.Client.find(params.client_id);
+    const client = await provider.Client.find(ctx, params.client_id);
 
     switch (prompt.name) {
       case 'login': {
@@ -165,7 +165,7 @@ module.exports = (provider) => {
 
     if (grantId) {
       // we'll be modifying existing grant in existing session
-      grant = await provider.Grant.find(grantId);
+      grant = await provider.Grant.find(ctx, grantId);
     } else {
       // we're establishing a new grant
       grant = new provider.Grant({
@@ -187,7 +187,7 @@ module.exports = (provider) => {
       }
     }
 
-    grantId = await grant.save();
+    grantId = await grant.save(ctx);
 
     const consent = {};
     if (!interactionDetails.grantId) {

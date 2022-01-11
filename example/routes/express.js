@@ -45,12 +45,14 @@ module.exports = (app, provider) => {
   }
 
   app.get('/interaction/:uid', setNoCache, async (req, res, next) => {
+    const ctx = app.createContext(req, res);
+
     try {
       const {
         uid, prompt, params, session,
       } = await provider.interactionDetails(req, res);
 
-      const client = await provider.Client.find(params.client_id);
+      const client = await provider.Client.find(ctx, params.client_id);
 
       switch (prompt.name) {
         case 'login': {
@@ -108,6 +110,7 @@ module.exports = (app, provider) => {
   });
 
   app.post('/interaction/:uid/confirm', setNoCache, body, async (req, res, next) => {
+    const ctx = app.createContext(req, res);
     try {
       const interactionDetails = await provider.interactionDetails(req, res);
       const { prompt: { name, details }, params, session: { accountId } } = interactionDetails;
@@ -118,7 +121,7 @@ module.exports = (app, provider) => {
 
       if (grantId) {
         // we'll be modifying existing grant in existing session
-        grant = await provider.Grant.find(grantId);
+        grant = await provider.Grant.find(ctx, grantId);
       } else {
         // we're establishing a new grant
         grant = new provider.Grant({
@@ -140,7 +143,7 @@ module.exports = (app, provider) => {
         }
       }
 
-      grantId = await grant.save();
+      grantId = await grant.save({});
 
       const consent = {};
       if (!interactionDetails.grantId) {

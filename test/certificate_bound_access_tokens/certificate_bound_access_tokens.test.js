@@ -29,14 +29,14 @@ describe('features.mTLS.certificateBoundAccessTokens', () => {
       const at = new this.provider.AccessToken({
         grantId: this.getGrantId('client'),
         accountId: this.loggedInAccountId,
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'openid',
       });
       at.setThumbprint('x5t', crt);
 
       expect(() => at.setThumbprint('jkt', 'foo')).to.throw().with.property('error_description', 'multiple proof-of-posession mechanisms are not allowed');
 
-      const bearer = await at.save();
+      const bearer = await at.save({});
 
       await this.agent.get('/me')
         .auth(bearer, { type: 'bearer' })
@@ -59,12 +59,12 @@ describe('features.mTLS.certificateBoundAccessTokens', () => {
       const at = new this.provider.AccessToken({
         grantId: this.getGrantId('client'),
         accountId: this.loggedInAccountId,
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'openid',
       });
       at.setThumbprint('x5t', crt);
 
-      const token = await at.save();
+      const token = await at.save({});
 
       await this.agent.post('/token/introspection')
         .auth('client', 'secret')

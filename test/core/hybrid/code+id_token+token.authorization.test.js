@@ -30,7 +30,7 @@ describe('HYBRID code+id_token+token', () => {
           .expect(auth.validateState)
           .expect(auth.validateClientLocation);
 
-        expect(await this.provider.AccessToken.find(auth.res.access_token)).to.have.property('gty', 'implicit');
+        expect(await this.provider.AccessToken.find({}, auth.res.access_token)).to.have.property('gty', 'implicit');
       });
 
       it('handles mixed up response_type order', async function () {
@@ -46,7 +46,7 @@ describe('HYBRID code+id_token+token', () => {
           .expect(auth.validateState)
           .expect(auth.validateClientLocation);
 
-        expect(await this.provider.AccessToken.find(auth.res.access_token)).to.have.property('gty', 'implicit');
+        expect(await this.provider.AccessToken.find({}, auth.res.access_token)).to.have.property('gty', 'implicit');
       });
 
       it('populates ctx.oidc.entities', function (done) {

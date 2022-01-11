@@ -36,11 +36,11 @@ describe('CORS setup', () => {
     const at = new this.provider.AccessToken({
       accountId: this.loggedInAccountId,
       grantId: this.getGrantId(),
-      client: await this.provider.Client.find('client'),
+      client: await this.provider.Client.find({}, 'client'),
       scope: 'openid',
     });
 
-    this.token = await at.save();
+    this.token = await at.save({});
   });
 
   describe('error handling', () => {

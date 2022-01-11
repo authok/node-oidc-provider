@@ -29,7 +29,7 @@ describe('configuration conformIdTokenClaims=true', () => {
   ].forEach((response_type) => {
     describe(`response_type=${response_type}`, () => {
       before(async function () {
-        const client = await this.provider.Client.find('client');
+        const client = await this.provider.Client.find({}, 'client');
 
         const claims = JSON.stringify({
           id_token: { gender: null, email: null, email_verified: null },
@@ -86,7 +86,7 @@ describe('configuration conformIdTokenClaims=true', () => {
           this.userinfo = userinfo;
 
           client.userinfoSignedResponseAlg = 'none';
-          await this.provider.Client.find('client');
+          await this.provider.Client.find({}, 'client');
           ({ text: userinfo } = await this.agent.get('/me')
             .auth(access_token, { type: 'bearer' })
             .expect(200));

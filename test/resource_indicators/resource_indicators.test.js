@@ -929,12 +929,12 @@ describe('features.resourceIndicators', () => {
       const at = new this.provider.AccessToken({
         accountId: this.loggedInAccountId,
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'openid api:read',
         aud: undefined,
       });
 
-      const bearer = await at.save();
+      const bearer = await at.save({});
 
       return this.agent.get('/me')
         .auth(bearer, { type: 'bearer' })
@@ -945,12 +945,12 @@ describe('features.resourceIndicators', () => {
       const at = new this.provider.AccessToken({
         accountId: this.loggedInAccountId,
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'openid api:read',
         aud: 'urn:foo:bar',
       });
 
-      const bearer = await at.save();
+      const bearer = await at.save({});
 
       const spy = sinon.spy();
       this.provider.once('userinfo.error', spy);
@@ -969,12 +969,12 @@ describe('features.resourceIndicators', () => {
         const at = new this.provider.AccessToken({
           accountId: this.loggedInAccountId,
           grantId: this.getGrantId(),
-          client: await this.provider.Client.find('client'),
+          client: await this.provider.Client.find({}, 'client'),
           scope: 'openid api:read',
           aud,
         });
 
-        const bearer = await at.save();
+        const bearer = await at.save({});
 
         const spy = sinon.spy();
         this.provider.once('userinfo.error', spy);

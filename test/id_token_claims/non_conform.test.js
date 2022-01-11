@@ -27,7 +27,7 @@ describe('configuration conformIdTokenClaims=false', () => {
   ].forEach((response_type) => {
     describe(`response_type=${response_type}`, () => {
       before(async function () {
-        const client = await this.provider.Client.find('client');
+        const client = await this.provider.Client.find({}, 'client');
         const auth = new this.AuthorizationRequest({ response_type, scope, prompt: 'consent' });
 
         let id_token;
@@ -76,7 +76,7 @@ describe('configuration conformIdTokenClaims=false', () => {
           this.userinfo = userinfo;
 
           client.userinfoSignedResponseAlg = 'none';
-          await this.provider.Client.find('client');
+          await this.provider.Client.find({}, 'client');
           ({ text: userinfo } = await this.agent.get('/me')
             .auth(access_token, { type: 'bearer' })
             .expect(200));

@@ -24,13 +24,13 @@ describe('revocation features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: 'foo',
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
       const stub = sinon.stub(this.provider.AccessToken.prototype, 'destroy').callsFake(() => Promise.resolve());
 
-      const token = await at.save();
+      const token = await at.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token })
@@ -47,13 +47,13 @@ describe('revocation features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: 'foo',
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
       const stub = sinon.stub(this.provider.AccessToken.prototype, 'destroy').callsFake(() => Promise.resolve());
 
-      const token = await at.save();
+      const token = await at.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'access_token' })
@@ -70,13 +70,13 @@ describe('revocation features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: 'foo',
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
       const stub = sinon.stub(this.provider.AccessToken.prototype, 'destroy').callsFake(() => Promise.resolve());
 
-      const token = await at.save();
+      const token = await at.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'refresh_token' })
@@ -93,13 +93,13 @@ describe('revocation features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: 'foo',
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
       const stub = sinon.stub(this.provider.AccessToken.prototype, 'destroy').callsFake(() => Promise.resolve());
 
-      const token = await at.save();
+      const token = await at.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'foobar' })
@@ -116,13 +116,13 @@ describe('revocation features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: 'foo',
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
       sinon.stub(this.provider.AccessToken, 'find').callsFake(async () => { throw new Error(); });
 
-      const token = await at.save();
+      const token = await at.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token })
@@ -140,13 +140,13 @@ describe('revocation features', () => {
       const rt = new this.provider.RefreshToken({
         accountId: 'accountId',
         grantId: 'foo',
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
       const stub = sinon.stub(this.provider.RefreshToken.prototype, 'destroy').callsFake(() => Promise.resolve());
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token })
@@ -163,13 +163,13 @@ describe('revocation features', () => {
       const rt = new this.provider.RefreshToken({
         accountId: 'accountId',
         grantId: 'foo',
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
       const stub = sinon.stub(this.provider.RefreshToken.prototype, 'destroy').callsFake(() => Promise.resolve());
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'refresh_token' })
@@ -186,13 +186,13 @@ describe('revocation features', () => {
       const rt = new this.provider.RefreshToken({
         accountId: 'accountId',
         grantId: 'foo',
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
       const stub = sinon.stub(this.provider.RefreshToken.prototype, 'destroy').callsFake(() => Promise.resolve());
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'client_credentials' })
@@ -209,13 +209,13 @@ describe('revocation features', () => {
       const rt = new this.provider.RefreshToken({
         accountId: 'accountId',
         grantId: 'foo',
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'scope',
       });
 
       const stub = sinon.stub(this.provider.RefreshToken.prototype, 'destroy').callsFake(() => Promise.resolve());
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'foobar' })
@@ -230,12 +230,12 @@ describe('revocation features', () => {
 
     it('revokes client credentials token [no hint]', async function () {
       const rt = new this.provider.ClientCredentials({
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
       });
 
       const stub = sinon.stub(this.provider.ClientCredentials.prototype, 'destroy').callsFake(() => Promise.resolve());
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token })
@@ -250,12 +250,12 @@ describe('revocation features', () => {
 
     it('revokes client credentials token [correct hint]', async function () {
       const rt = new this.provider.ClientCredentials({
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
       });
 
       const stub = sinon.stub(this.provider.ClientCredentials.prototype, 'destroy').callsFake(() => Promise.resolve());
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'client_credentials' })
@@ -270,12 +270,12 @@ describe('revocation features', () => {
 
     it('revokes client credentials token [wrong hint]', async function () {
       const rt = new this.provider.ClientCredentials({
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
       });
 
       const stub = sinon.stub(this.provider.ClientCredentials.prototype, 'destroy').callsFake(() => Promise.resolve());
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'access_token' })
@@ -290,12 +290,12 @@ describe('revocation features', () => {
 
     it('revokes client credentials token [unrecognized hint]', async function () {
       const rt = new this.provider.ClientCredentials({
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
       });
 
       const stub = sinon.stub(this.provider.ClientCredentials.prototype, 'destroy').callsFake(() => Promise.resolve());
 
-      const token = await rt.save();
+      const token = await rt.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token, token_type_hint: 'foobar' })
@@ -346,11 +346,11 @@ describe('revocation features', () => {
       const at = new this.provider.AccessToken({
         accountId: 'accountId',
         grantId: 'foo',
-        client: await this.provider.Client.find('client2'),
+        client: await this.provider.Client.find({}, 'client2'),
         scope: 'scope',
       });
 
-      const token = await at.save();
+      const token = await at.save({});
       return this.agent.post(route)
         .auth('client', 'secret')
         .send({ token })
@@ -410,11 +410,11 @@ describe('revocation features', () => {
           const at = new this.provider.AccessToken({
             accountId: 'accountId',
             grantId: 'foo',
-            client: await this.provider.Client.find('client'),
+            client: await this.provider.Client.find({}, 'client'),
             scope: 'scope',
           });
 
-          const token = await at.save();
+          const token = await at.save({});
           await this.agent.post(route)
             .auth('client', 'secret')
             .send({
@@ -433,11 +433,11 @@ describe('revocation features', () => {
           const rt = new this.provider.RefreshToken({
             accountId: 'accountId',
             grantId: 'foo',
-            client: await this.provider.Client.find('client'),
+            client: await this.provider.Client.find({}, 'client'),
             scope: 'scope',
           });
 
-          const token = await rt.save();
+          const token = await rt.save({});
           await this.agent.post(route)
             .auth('client', 'secret')
             .send({ token })
@@ -452,10 +452,10 @@ describe('revocation features', () => {
 
         (async () => {
           const rt = new this.provider.ClientCredentials({
-            client: await this.provider.Client.find('client'),
+            client: await this.provider.Client.find({}, 'client'),
           });
 
-          const token = await rt.save();
+          const token = await rt.save({});
           await this.agent.post(route)
             .auth('client', 'secret')
             .send({ token })

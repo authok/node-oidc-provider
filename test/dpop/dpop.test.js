@@ -59,14 +59,14 @@ describe('features.dPoP', () => {
     it('validates the way DPoP Proof JWT is provided', async function () {
       const at = new this.provider.AccessToken({
         accountId: 'account',
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'openid',
       });
       at.setThumbprint('jkt', this.jwk.thumbprint);
 
       expect(() => at.setThumbprint('x5t', 'foo')).to.throw().with.property('error_description', 'multiple proof-of-posession mechanisms are not allowed');
 
-      const dpop = await at.save();
+      const dpop = await at.save({});
 
       await this.agent.get('/me')
         .set('Authorization', `Bearer ${dpop}`)
@@ -107,12 +107,12 @@ describe('features.dPoP', () => {
       const at = new this.provider.AccessToken({
         accountId: this.loggedInAccountId,
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'openid',
       });
       at.setThumbprint('jkt', this.jwk.thumbprint);
 
-      const dpop = await at.save();
+      const dpop = await at.save({});
 
       for (const value of ['JWT', 'secevent+jwt']) { // eslint-disable-line no-restricted-syntax
         await this.agent.get('/me') // eslint-disable-line no-await-in-loop
@@ -219,12 +219,12 @@ describe('features.dPoP', () => {
       const at = new this.provider.AccessToken({
         accountId: this.loggedInAccountId,
         grantId: this.getGrantId(),
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'openid',
       });
       at.setThumbprint('jkt', this.jwk.thumbprint);
 
-      const dpop = await at.save();
+      const dpop = await at.save({});
       const proof = this.proof(`${this.provider.issuer}${this.suitePath('/me')}`, 'GET', dpop);
 
       await this.agent.get('/me')
@@ -281,12 +281,12 @@ describe('features.dPoP', () => {
     it('exposes cnf and DPoP token type now', async function () {
       const at = new this.provider.AccessToken({
         accountId: 'account',
-        client: await this.provider.Client.find('client'),
+        client: await this.provider.Client.find({}, 'client'),
         scope: 'openid',
       });
       at.setThumbprint('jkt', this.jwk.thumbprint);
 
-      const token = await at.save();
+      const token = await at.save({});
 
       await this.agent.post('/token/introspection')
         .auth('client', 'secret')

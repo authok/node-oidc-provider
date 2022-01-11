@@ -16,7 +16,7 @@ describe('client.requestUris', () => {
       }],
     });
 
-    return provider.Client.find('client')
+    return provider.Client.find({}, 'client')
       .then((client) => {
         expect(client).to.have.property('requestUris').that.is.an('array');
         expect(client.requestUris).to.be.empty;
@@ -36,7 +36,7 @@ describe('client.requestUris', () => {
       }],
     });
 
-    return provider.Client.find('client')
+    return provider.Client.find({}, 'client')
       .then((client) => expect(client.requestUris).to.be.undefined);
   });
 });

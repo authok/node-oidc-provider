@@ -85,7 +85,7 @@ describe('IMPLICIT id_token', () => {
       });
 
       it('HMAC ID Token Hint with expired secret errors', async function () {
-        const client = await this.provider.Client.find('client-expired-secret');
+        const client = await this.provider.Client.find({}, 'client-expired-secret');
         client.clientSecretExpiresAt = 0;
 
         let auth = new this.AuthorizationRequest({

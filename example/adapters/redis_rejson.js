@@ -32,7 +32,7 @@ class RedisAdapter {
     this.name = name;
   }
 
-  async upsert(id, payload, expiresIn) {
+  async upsert(ctx, id, payload, expiresIn) {
     const key = this.key(id);
 
     const multi = client.multi();
@@ -69,29 +69,29 @@ class RedisAdapter {
     await multi.exec();
   }
 
-  async find(id) {
+  async find(ctx, id) {
     const key = this.key(id);
     const data = await client.call('JSON.GET', key);
     if (!data) return undefined;
     return JSON.parse(data);
   }
 
-  async findByUid(uid) {
+  async findByUid(ctx, uid) {
     const id = await client.get(uidKeyFor(uid));
-    return this.find(id);
+    return this.find(ctx, id);
   }
 
-  async findByUserCode(userCode) {
+  async findByUserCode(ctx, userCode) {
     const id = await client.get(userCodeKeyFor(userCode));
-    return this.find(id);
+    return this.find(ctx, id);
   }
 
-  async destroy(id) {
+  async destroy(ctx, id) {
     const key = this.key(id);
     await client.del(key);
   }
 
-  async revokeByGrantId(grantId) { // eslint-disable-line class-methods-use-this
+  async revokeByGrantId(ctx, grantId) { // eslint-disable-line class-methods-use-this
     const multi = client.multi();
     const tokens = await client.lrange(grantKeyFor(grantId), 0, -1);
     tokens.forEach((token) => multi.del(token));
@@ -99,7 +99,7 @@ class RedisAdapter {
     await multi.exec();
   }
 
-  async consume(id) {
+  async consume(ctx, id) {
     await client.call('JSON.SET', this.key(id), 'consumed', Math.floor(Date.now() / 1000));
   }
 

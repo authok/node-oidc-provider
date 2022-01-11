@@ -91,9 +91,9 @@ describe('paseto format', () => {
         },
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      expect(await token.save()).to.match(/^v1\.public\./);
+      expect(await token.save({})).to.match(/^v1\.public\./);
     });
 
     it('v2.public', async function () {
@@ -106,9 +106,9 @@ describe('paseto format', () => {
         },
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      expect(await token.save()).to.match(/^v2\.public\./);
+      expect(await token.save({})).to.match(/^v2\.public\./);
     });
 
     if (above16) {
@@ -122,9 +122,9 @@ describe('paseto format', () => {
           },
         });
 
-        const client = await this.provider.Client.find(clientId);
+        const client = await this.provider.Client.find({}, clientId);
         const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-        expect(await token.save()).to.match(/^v3\.public\./);
+        expect(await token.save({})).to.match(/^v3\.public\./);
       });
     }
 
@@ -139,9 +139,9 @@ describe('paseto format', () => {
           },
         });
 
-        const client = await this.provider.Client.find(clientId);
+        const client = await this.provider.Client.find({}, clientId);
         const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-        expect(await token.save()).to.match(/^v4\.public\./);
+        expect(await token.save({})).to.match(/^v4\.public\./);
       });
     }
 
@@ -156,9 +156,9 @@ describe('paseto format', () => {
         },
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      expect(await token.save()).to.match(/^v1\.local\./);
+      expect(await token.save({})).to.match(/^v1\.local\./);
     });
 
     it('v1.local (keyObject)', async function () {
@@ -172,9 +172,9 @@ describe('paseto format', () => {
         },
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      expect(await token.save()).to.match(/^v1\.local\./);
+      expect(await token.save({})).to.match(/^v1\.local\./);
     });
 
     if (above16) {
@@ -189,9 +189,9 @@ describe('paseto format', () => {
           },
         });
 
-        const client = await this.provider.Client.find(clientId);
+        const client = await this.provider.Client.find({}, clientId);
         const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-        expect(await token.save()).to.match(/^v3\.local\./);
+        expect(await token.save({})).to.match(/^v3\.local\./);
       });
 
       it('v3.local (keyObject)', async function () {
@@ -205,9 +205,9 @@ describe('paseto format', () => {
           },
         });
 
-        const client = await this.provider.Client.find(clientId);
+        const client = await this.provider.Client.find({}, clientId);
         const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-        expect(await token.save()).to.match(/^v3\.local\./);
+        expect(await token.save({})).to.match(/^v3\.local\./);
       });
     }
 
@@ -222,9 +222,9 @@ describe('paseto format', () => {
         },
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      return assert.rejects(token.save(), (err) => {
+      return assert.rejects(token.save({}), (err) => {
         expect(err).to.be.an('error');
         expect(err.message).to.equal('resolved Resource Server paseto configuration has no corresponding key in the provider\'s keystore');
         return true;
@@ -243,9 +243,9 @@ describe('paseto format', () => {
         },
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      return assert.rejects(token.save(), (err) => {
+      return assert.rejects(token.save({}), (err) => {
         expect(err).to.be.an('error');
         expect(err.message).to.equal('paseto.kid must be a string when provided');
         return true;
@@ -262,9 +262,9 @@ describe('paseto format', () => {
         },
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      return assert.rejects(token.save(), (err) => {
+      return assert.rejects(token.save({}), (err) => {
         expect(err).to.be.an('error');
         expect(err.message).to.equal('unsupported PASETO version and purpose');
         return true;
@@ -281,9 +281,9 @@ describe('paseto format', () => {
         },
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      return assert.rejects(token.save(), (err) => {
+      return assert.rejects(token.save({}), (err) => {
         expect(err).to.be.an('error');
         expect(err.message).to.equal('local purpose PASETO Resource Server requires a "paseto.key"');
         return true;
@@ -301,9 +301,9 @@ describe('paseto format', () => {
         },
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      return assert.rejects(token.save(), (err) => {
+      return assert.rejects(token.save({}), (err) => {
         expect(err).to.be.an('error');
         expect(err.message).to.equal('local purpose PASETO Resource Server "paseto.key" must be 256 bits long secret key');
         return true;
@@ -321,9 +321,9 @@ describe('paseto format', () => {
         },
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      return assert.rejects(token.save(), (err) => {
+      return assert.rejects(token.save({}), (err) => {
         expect(err).to.be.an('error');
         expect(err.message).to.equal('local purpose PASETO Resource Server "paseto.key" must be 256 bits long secret key');
         return true;
@@ -341,9 +341,9 @@ describe('paseto format', () => {
         },
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      return assert.rejects(token.save(), (err) => {
+      return assert.rejects(token.save({}), (err) => {
         expect(err).to.be.an('error');
         expect(err.message).to.equal('local purpose PASETO Resource Server "paseto.key" must be 256 bits long secret key');
         return true;
@@ -356,9 +356,9 @@ describe('paseto format', () => {
         audience: 'foo',
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      return assert.rejects(token.save(), (err) => {
+      return assert.rejects(token.save({}), (err) => {
         expect(err).to.be.an('error');
         expect(err.message).to.equal('missing "paseto" Resource Server configuration');
         return true;
@@ -376,9 +376,9 @@ describe('paseto format', () => {
           },
         });
 
-        const client = await this.provider.Client.find(clientId);
+        const client = await this.provider.Client.find({}, clientId);
         const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-        return assert.rejects(token.save(), (err) => {
+        return assert.rejects(token.save({}), (err) => {
           expect(err).to.be.an('error');
           expect(err.message).to.equal('PASETO v3 and v4 tokens are only supported in Node.js >= 16.0.0 runtimes');
           return true;
@@ -393,9 +393,9 @@ describe('paseto format', () => {
         paseto: null,
       });
 
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const token = new this.provider.AccessToken({ client, ...fullPayload, resourceServer });
-      return assert.rejects(token.save(), (err) => {
+      return assert.rejects(token.save({}), (err) => {
         expect(err).to.be.an('error');
         expect(err.message).to.equal('missing "paseto" Resource Server configuration');
         return true;
@@ -405,11 +405,11 @@ describe('paseto format', () => {
 
   it('for AccessToken', async function () {
     const upsert = sinon.spy(this.TestAdapter.for('AccessToken'), 'upsert');
-    const client = await this.provider.Client.find(clientId);
+    const client = await this.provider.Client.find({}, clientId);
     const token = new this.provider.AccessToken({ client, ...fullPayload });
     const issued = sinon.spy();
     this.provider.on('access_token.issued', issued);
-    const p = await token.save();
+    const p = await token.save({});
 
     sinon.assert.notCalled(upsert);
 
@@ -434,11 +434,11 @@ describe('paseto format', () => {
 
   it('for pairwise AccessToken', async function () {
     const upsert = sinon.spy(this.TestAdapter.for('AccessToken'), 'upsert');
-    const client = await this.provider.Client.find('pairwise');
+    const client = await this.provider.Client.find({}, 'pairwise');
     const token = new this.provider.AccessToken({ client, ...fullPayload });
     const issued = sinon.spy();
     this.provider.on('access_token.issued', issued);
-    const p = await token.save();
+    const p = await token.save({});
 
     sinon.assert.notCalled(upsert);
 
@@ -463,11 +463,11 @@ describe('paseto format', () => {
 
   it('for ClientCredentials', async function () {
     const upsert = sinon.spy(this.TestAdapter.for('ClientCredentials'), 'upsert');
-    const client = await this.provider.Client.find(clientId);
+    const client = await this.provider.Client.find({}, clientId);
     const token = new this.provider.ClientCredentials({ client, ...fullPayload });
     const issued = sinon.spy();
     this.provider.on('client_credentials.issued', issued);
-    const p = await token.save();
+    const p = await token.save({});
 
     sinon.assert.notCalled(upsert);
 
@@ -496,7 +496,7 @@ describe('paseto format', () => {
     });
 
     it('allows the payload to be extended', async function () {
-      const client = await this.provider.Client.find(clientId);
+      const client = await this.provider.Client.find({}, clientId);
       const accessToken = new this.provider.AccessToken({ client, ...fullPayload });
       accessToken.resourceServer = resourceServer;
       i(this.provider).configuration('formats.customizers').paseto = (ctx, token, paseto) => {
@@ -508,7 +508,7 @@ describe('paseto format', () => {
         paseto.payload.iss = 'foobar';
       };
 
-      const token = await accessToken.save();
+      const token = await accessToken.save({});
       const { footer, payload } = paseto.decode(token);
       expect(JSON.parse(footer)).to.have.property('customized', true);
       expect(payload).to.have.property('customized', true);

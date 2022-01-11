@@ -209,7 +209,7 @@ describe('registration features', () => {
           expect(response.body).not.to.have.property('client_secret_expires_at');
         });
 
-      const client = await this.provider.Client.find(client_id);
+      const client = await this.provider.Client.find({}, client_id);
 
       expect(client).not.to.have.property('clientSecret');
       expect(client).not.to.have.property('clientSecretExpiresAt');
@@ -281,7 +281,7 @@ describe('registration features', () => {
         redirect_uris: ['https://client.example.com/cb'],
       });
 
-      return this.provider.Client.find('foobar')
+      return this.provider.Client.find({}, 'foobar')
         .then((client) => {
           expect(client).to.be.ok;
         });
@@ -375,7 +375,7 @@ describe('registration features', () => {
           this.provider.enable('registration', { initialAccessToken: true });
 
           const iat = new (this.provider.InitialAccessToken)({});
-          return iat.save().then((value) => {
+          return iat.save({}).then((value) => {
             this.token = value;
           });
         });
@@ -385,7 +385,7 @@ describe('registration features', () => {
         });
 
         it('allows the developers to insert new tokens with no expiration', function () {
-          return new this.provider.InitialAccessToken().save().then((v) => {
+          return new this.provider.InitialAccessToken().save({}).then((v) => {
             const jti = this.getTokenJti(v);
             const token = this.TestAdapter.for('InitialAccessToken').syncFind(jti);
             expect(token).not.to.have.property('exp');
@@ -395,7 +395,7 @@ describe('registration features', () => {
         it('allows the developers to insert new tokens with expiration', function () {
           return new this.provider.InitialAccessToken({
             expiresIn: 24 * 60 * 60,
-          }).save().then((v) => {
+          }).save({}).then((v) => {
             const jti = this.getTokenJti(v);
             const token = this.TestAdapter.for('InitialAccessToken').syncFind(jti);
             expect(token).to.have.property('exp');
@@ -579,7 +579,7 @@ describe('registration features', () => {
 
     it('cannot read non-dynamic clients', async function () {
       const rat = new (this.provider.RegistrationAccessToken)({ clientId: 'client' });
-      const bearer = await rat.save();
+      const bearer = await rat.save({});
       return this.agent.get('/reg/client')
         .auth(bearer, { type: 'bearer' })
         .expect(this.failWith(403, 'invalid_request', 'client does not have permission to read its record'));

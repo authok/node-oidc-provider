@@ -18,7 +18,7 @@ const oidcConfiguration = {
       && ctx.oidc.result.consent.grantId) || ctx.oidc.session.grantIdFor(ctx.oidc.client.clientId);
 
     if (grantId) {
-      return ctx.oidc.provider.Grant.find(grantId);
+      return ctx.oidc.provider.Grant.find(ctx, grantId);
     } else if (isFirstParty(ctx.oidc.client)) {
       const grant = new ctx.oidc.provider.Grant({
         clientId: ctx.oidc.client.clientId,
@@ -28,7 +28,7 @@ const oidcConfiguration = {
       grant.addOIDCScope('openid email profile');
       grant.addOIDCClaims(['first_name']);
       grant.addResourceScope('urn:example:resource-indicator', 'api:read api:write');
-      await grant.save();
+      await grant.save(ctx);
       return grant;
     }
   }

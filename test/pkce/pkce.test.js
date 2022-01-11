@@ -236,7 +236,7 @@ describe('PKCE RFC7636', () => {
         codeChallengeMethod: 'plain',
         redirectUri: 'com.example.myapp:/localhost/cb',
       });
-      const code = await authCode.save();
+      const code = await authCode.save({});
 
       return this.agent.post('/token')
         .auth('client', 'secret')
@@ -260,7 +260,7 @@ describe('PKCE RFC7636', () => {
         codeChallengeMethod: 'S256',
         redirectUri: 'com.example.myapp:/localhost/cb',
       });
-      const code = await authCode.save();
+      const code = await authCode.save({});
 
       return this.agent.post('/token')
         .auth('client', 'secret')
@@ -284,7 +284,7 @@ describe('PKCE RFC7636', () => {
         codeChallengeMethod: 'plain',
         redirectUri: 'com.example.myapp:/localhost/cb',
       });
-      const code = await authCode.save();
+      const code = await authCode.save({});
 
       return this.agent.post('/token')
         .auth('client', 'secret')
@@ -310,7 +310,7 @@ describe('PKCE RFC7636', () => {
         codeChallengeMethod: 'plain',
         redirectUri: 'com.example.myapp:/localhost/cb',
       });
-      const code = await authCode.save();
+      const code = await authCode.save({});
 
       return this.agent.post('/token')
         .auth('client', 'secret')
@@ -337,7 +337,7 @@ describe('PKCE RFC7636', () => {
         codeChallengeMethod: 'S256',
         redirectUri: 'com.example.myapp:/localhost/cb',
       });
-      const code = await authCode.save();
+      const code = await authCode.save({});
 
       return this.agent.post('/token')
         .auth('client', 'secret')
@@ -364,7 +364,7 @@ describe('PKCE RFC7636', () => {
         codeChallengeMethod: 'S256',
         redirectUri: 'com.example.myapp:/localhost/cb',
       });
-      const code = await authCode.save();
+      const code = await authCode.save({});
 
       return this.agent.post('/token')
         .auth('client', 'secret')
@@ -392,7 +392,7 @@ describe('PKCE RFC7636', () => {
         codeChallengeMethod: 'S256',
         redirectUri: 'com.example.myapp:/localhost/cb',
       });
-      const code = await authCode.save();
+      const code = await authCode.save({});
 
       return this.agent.post('/token')
         .auth('client', 'secret')
@@ -420,7 +420,7 @@ describe('PKCE RFC7636', () => {
         codeChallengeMethod: 'S256',
         redirectUri: 'com.example.myapp:/localhost/cb',
       });
-      const code = await authCode.save();
+      const code = await authCode.save({});
 
       return this.agent.post('/token')
         .auth('client', 'secret')
@@ -457,7 +457,7 @@ describe('PKCE RFC7636', () => {
           codeChallengeMethod: 'S256',
           redirectUri: 'com.example.myapp:/localhost/cb',
         });
-        const code = await authCode.save();
+        const code = await authCode.save({});
 
         return this.agent.post('/token')
           .auth('client', 'secret')
