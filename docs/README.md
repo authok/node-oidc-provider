@@ -2612,7 +2612,7 @@ The default interaction policy consists of two available prompts, login and cons
 
 
 </details>
-<a id="interactions-policy-disabling-default-consent-checks"></a><details><summary>(Click to expand) disabling default consent checks</summary><br>
+<a id="interactions-policy-disabling-default-consent-checks"></a><details><summary>(Click to expand) 禁用默认的 consent 检查</summary><br>
 
 
 You may be required to skip (silently accept) some of the consent checks, while it is discouraged there are valid reasons to do that, for instance in some first-party scenarios or going with pre-existing, previously granted, consents. To simply silenty "accept" first-party/resource indicated scopes or pre-agreed upon claims use the `loadExistingGrant` configuration helper function, in there you may just instantiate (and save!) a grant for the current clientId and accountId values.  
