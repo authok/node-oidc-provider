@@ -1,5 +1,10 @@
 # Changelog
 
+把 organization 加入了 authorization_code grant_type 的参数白名单
+## [7.10.20](2022-02-26)
+
+# Changelog
+
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
 ## [7.10.4](https://github.com/panva/node-oidc-provider/compare/v7.10.3...v7.10.4) (2021-12-05)
